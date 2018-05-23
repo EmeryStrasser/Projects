@@ -1,68 +1,66 @@
 <html>
-    <head>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <link rel="stylesheet" href="MajorProject.css">
-       
-    </head>
+
+<head>
+  <link rel="stylesheet" href="MajorProject.css">
+</head>
+
 <body>
 
-    <h1>
-        LogBook
-    </h1>
-    
-<div id="app">
-  {{ message }}
-</div>
+  <h1>
+    Learner Driver LogBook
+  </h1>
 
-   <!--
-    <div id = "app">
+  <div class="pages" id="tablePage">
+    <table>
+      <tr class="Header">
+        <th>Odometer Start</th>
+        <th>Odometer Finish</th>
+        <th>Weather</th>
+        <th>Road Conditions</th>
+        <th>Time Start</th>
+        <th>Time Finish</th>
+      </tr>
+      <tr>
+        <td>Test1</td>
+        <td>test2</td>
+        <td>test2</td>
+        <td>test3</td>
+        <td>Test 3</td>
+        <td>ets</td>
+      </tr>
+    </table>
+    <br>
+    <br>
+    <button onclick='changePages("tablePage","inputPage")'>New Log</button>
+  </div>
 
-        {{ message }}
+  <div class="pages" id="inputPage">
 
-        </div>
-
-
-
-        <div class = "page" id = "Page1">
-      <table>
-        <tr class = "Header">
-          <th>Odometer Start</th>
-          <th>Odometer Finish</th>
-          <th>Weather</th>
-          <th>Road Conditions</th>
-          <th>Time Start</th>
-          <th>Time Finish</th>
-        </tr>
-
-        <tr>
-          <td>Test1</td>
-          <td>test2</td>
-          <td>test2</td>
-          <td>test3</td>
-          <td>Test 3</td>
-          <td>ets</td>
-
-        </tr>
-       
-
-      </table>
-
-      <br>
-      <br>
-      <button onclick="showPage('#InputRecordPage')">
-        New Record
-      </button>  
-
-    </div>
-
-    <div class = "page" id = "InputRecordPage">
+    <p>Odometer Start:</p>
+    <input type="text" name="OdometerStart">
+    <p>Odometer Finish:</p>
+    <input type="text" name="OdometerFinish">
+    <p>Time Start:</p>
+    <input type="text" name="TimeStart">
+    <p>Time Finish:</p>
+    <input type="text" name="TimeFinish">
+    <p>Weather:</p>
+    <select>
+      <option value="clear">Clear</option>
+      <option value="rainy">Rainy</option>
+      <option value="thunder">Thunder</option>
+    </select>
+    <p>Road Conditions:</p>
+    <select>
+      <option value="road">Road</option>
+      <option value="mainRoad">Main Road</option>
+      <option value="thunder">Thunder</option>
+    </select>
+  </div>
 
 
-
-
-    </div>
-  -->
   <script src="MajorProject.js"></script>
 
-    </body>
-    </html>
+</body>
+
+</html>
