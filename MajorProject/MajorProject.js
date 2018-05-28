@@ -19,3 +19,10 @@ function changePages(currentPage, newPage) {
   pageToHide.style.display = "none";
   pageToShow.style.display = "block";
 }
+
+
+// function goToPage(pageNumber){
+
+// document.querySelectorAll('.pages').forEach(e)
+
+// }
