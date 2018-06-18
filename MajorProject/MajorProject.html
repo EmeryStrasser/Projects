@@ -11,51 +11,82 @@
   </h1>
 
   <div class="pages" id="page1">
-    <table>
+
+    <table id="logbook">
       <tr class="Header">
+        <th>Date</th>
         <th>Odometer Start</th>
         <th>Odometer Finish</th>
         <th>Weather</th>
         <th>Road Conditions</th>
+        <th>Traffic Conditions</th>
         <th>Time Start</th>
         <th>Time Finish</th>
+        <th>Instructor Id</th>
+        <th>License Number</th>
+        <th>Hours Driven Day</th>
+        <th>Hours Driven Night</th>
       </tr>
-      <tr>
-        <td>Test1</td>
-        <td>test2</td>
-        <td>test2</td>
-        <td>test3</td>
-        <td>Test 3</td>
-        <td>ets</td>
-      </tr>
+
     </table>
     <br>
     <br>
-    <button onclick='goToPage("page2")'>New Log</button>
+    <button onclick='goToPage(page2)'>New Log</button>
+    <button onclick='addNewRow()'>New Row</button>
   </div>
 
   <div class="pages" id="page2">
 
+    <p>Date:</p>
+    <input type="date" id="Date">
+
     <p>Odometer Start:</p>
-    <input type="text" name="OdometerStart">
+    <input type="number" id="OdometerStart" min="0" max="999999">
+
     <p>Odometer Finish:</p>
-    <input type="text" name="OdometerFinish">
+    <input type="number" id="OdometerFinish" min="0" max="999999">
+
     <p>Time Start:</p>
-    <input type="text" name="TimeStart">
+    <input type="time" id="TimeStart">
+
     <p>Time Finish:</p>
-    <input type="text" name="TimeFinish">
+    <input type="time" id="TimeFinish">
+
+    <p>Instructor Id:</p>
+    <input type="text" id="InstuctorId" maxlength="9">
+
+    <p>License Number:</p>
+    <input type="text" id="LicenseNumber" maxlength="9">
+
+    <p>Hours Driven Day:</p>
+    <input type="text" id="HoursDay">
+
+    <p>Hours Driven Night:</p>
+    <input type="text" id="HoursNight">
+
     <p>Weather:</p>
-    <select>
+    <select id="weather">
       <option value="clear">Clear</option>
       <option value="rainy">Rainy</option>
       <option value="thunder">Thunder</option>
     </select>
+
     <p>Road Conditions:</p>
-    <select>
+    <select id="roadCondition">
       <option value="road">Road</option>
       <option value="mainRoad">Main Road</option>
-      <option value="thunder">Thunder</option>
+      <option value="dirtRoad">dirtRoad</option>
     </select>
+
+    <p>Traffic Conditions:</p>
+    <select id="traffic">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+
+    <button onclick='checkCorrectPage()'>Save</button>
+
   </div>
 
 
