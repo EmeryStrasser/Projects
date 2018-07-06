@@ -2,95 +2,369 @@
 
 <head>
   <link rel="stylesheet" href="MajorProject.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
-<body>
-
-  <h1>
+<body class="w3-dark-grey">
+  <br>
+  <div class="w3-light-grey w3-round">
+    <div id="progression" class="w3-container w3-round w3-blue" style="width:0%">25%</div>
+  </div>
+  <h1 class="w3-grey">
     Learner Driver LogBook
+    <span id="progressBar">
+      <span id="currentHours">0 </span>/120
+    </span>
+
   </h1>
 
-  <div class="pages" id="page1">
 
-    <table id="logbook">
-      <tr class="Header">
-        <th>Date</th>
-        <th>Odometer Start</th>
-        <th>Odometer Finish</th>
-        <th>Weather</th>
-        <th>Road Conditions</th>
-        <th>Traffic Conditions</th>
-        <th>Time Start</th>
-        <th>Time Finish</th>
-        <th>Instructor Id</th>
-        <th>License Number</th>
-        <th>Hours Driven Day</th>
-        <th>Hours Driven Night</th>
+
+
+  <div class="pages w3-center" id="mainPage">
+
+
+    <button onclick="goToPage(logbookPage)">Logbook Page</button>
+    <br>
+    <br>
+    <button>Statistics</button>
+    <br>
+    <br>
+    <button onclick="goToPage(instructorPage)">Update Instructors</button>
+
+
+
+  </div>
+
+  <div class="pages w3-center" id="instructorPage">
+
+
+    <input type="text" id="instructorId" placeholder="ID">
+    <input type="text" id="instructorName" placeholder="Name">
+    <br>
+    <button onclick="addNewInstructor(), goToPage(mainPage)">Save</button>
+  </div>
+
+
+  <div class="pages w3-center" id="logbookPage">
+    <button onclick='goToPage(inputPage)' class="w3-button w3-circle w3-light-grey">+</button>
+    <button onclick='addNewRow()'>new</button>
+    <button onclick="goToPage(queryPage)">query</button>
+    <br>
+    <br>
+    <div class="w3-responsive">
+      <table class="w3-border w3-striped w3-card-4 w3-centered logTable" id="logbook">
+        <thead>
+          <tr class="w3-grey Header">
+            <th>Date</th>
+            <th>Odometer Start</th>
+            <th>Odometer Finish</th>
+            <th>Weather</th>
+            <th>Road Conditions</th>
+            <th>Traffic Conditions</th>
+            <th>Time Start</th>
+            <th>Time Finish</th>
+            <th>Instructor Id</th>
+            <th>License Number</th>
+            <th>Hours Driven Day</th>
+            <th>Hours Driven Night</th>
+          </tr>
+        </thead>
+
+        <tbody id="tbody">
+          <tr class="w3-grey"></tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <br>
+
+
+    <br>
+    <br>
+
+
+  </div>
+
+  <div class="pages w3-center" id="inputPage">
+    <table class="inputTable">
+
+      <tr>
+        <td>
+          <label>Date:</label>
+        </td>
+        <td>
+          <input type="date" id="Date" placeholder="01/01/2018">
+      </tr>
+
+      <tr>
+        <td>
+          <label>Odometer Start:</label>
+        </td>
+        <td>
+          <input type="number" id="OdometerStart" min="0 " max="999999" placeholder="10022">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Odometer Finish:</label>
+        </td>
+        <td>
+          <input type="number" id="OdometerFinish" min="0 " max="999999 " placeholder="10026 ">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Time Start:</label>
+        </td>
+        <td>
+          <input type="time" id="TimeStart" placeholder="4:00:am">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Time Finish:</label>
+        </td>
+        <td>
+          <input type="time" id="TimeFinish" placeholder="6:00:am">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Instructor Id:</label>
+        </td>
+        <td>
+          <select id="instructors">
+            <option></option>
+          </select>
+
+
+          <button onclick="goToPage(instructorPage)">Add Instructor</button>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>License Number:</label>
+        </td>
+        <td>
+          <input type="text" id="LicenseNumber" maxlength="9 " placeholder="WMS 002">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Hours Driven Day:</label>
+        </td>
+        <td>
+          <input type="text" id="HoursDay" placeholder="3">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Hours Driven Night:</label>
+        </td>
+        <td>
+          <input type="text" id="HoursNight" placeholder="2">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Weather:</label>
+        </td>
+        <td>
+          <select id="weather">
+            <option></option>
+            <option value="clear">Clear</option>
+            <option value="rainy">Rainy</option>
+            <option value="thunder">Thunder</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Road Conditions:</label>
+        </td>
+        <td>
+          <select id="roadCondition">
+            <option></option>
+            <option value="road">Road</option>
+            <option value="mainRoad">Main Road</option>
+            <option value="dirtRoad">dirtRoad</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Traffic Conditions:</label>
+        </td>
+        <td>
+          <select id="traffic">
+            <option></option>
+            <option value="low ">Low</option>
+            <option value="medium ">Medium</option>
+            <option value="high ">High</option>
+          </select>
+        </td>
       </tr>
 
     </table>
     <br>
     <br>
-    <button onclick='goToPage(page2)'>New Log</button>
-    <button onclick='addNewRow()'>New Row</button>
-  </div>
-
-  <div class="pages" id="page2">
-
-    <p>Date:</p>
-    <input type="date" id="Date">
-
-    <p>Odometer Start:</p>
-    <input type="number" id="OdometerStart" min="0" max="999999">
-
-    <p>Odometer Finish:</p>
-    <input type="number" id="OdometerFinish" min="0" max="999999">
-
-    <p>Time Start:</p>
-    <input type="time" id="TimeStart">
-
-    <p>Time Finish:</p>
-    <input type="time" id="TimeFinish">
-
-    <p>Instructor Id:</p>
-    <input type="text" id="InstuctorId" maxlength="9">
-
-    <p>License Number:</p>
-    <input type="text" id="LicenseNumber" maxlength="9">
-
-    <p>Hours Driven Day:</p>
-    <input type="text" id="HoursDay">
-
-    <p>Hours Driven Night:</p>
-    <input type="text" id="HoursNight">
-
-    <p>Weather:</p>
-    <select id="weather">
-      <option value="clear">Clear</option>
-      <option value="rainy">Rainy</option>
-      <option value="thunder">Thunder</option>
-    </select>
-
-    <p>Road Conditions:</p>
-    <select id="roadCondition">
-      <option value="road">Road</option>
-      <option value="mainRoad">Main Road</option>
-      <option value="dirtRoad">dirtRoad</option>
-    </select>
-
-    <p>Traffic Conditions:</p>
-    <select id="traffic">
-      <option value="low">Low</option>
-      <option value="medium">Medium</option>
-      <option value="high">High</option>
-    </select>
-
     <button onclick='checkCorrectPage()'>Save</button>
 
   </div>
 
+  <div class="pages w3-center" id=queryPage>
+    <table class="inputTable">
 
-  <script src="MajorProject.js"></script>
+      <h2>Leave fields blank if no query</h2>
+      <tr>
+        <td>
+          <label>Date:</label>
+        </td>
+        <td>
+          <input type="date" id="DateQuery" placeholder="01/01/2018">
+      </tr>
+
+      <tr>
+        <td>
+          <label>Odometer Start:</label>
+        </td>
+        <td>
+          <input type="number" id="OdometerStartQuery" min="0 " max="999999" placeholder="10022">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Odometer Finish:</label>
+        </td>
+        <td>
+          <input type="number" id="OdometerFinishQuery" min="0 " max="999999 " placeholder="10026 ">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Time Start:</label>
+        </td>
+        <td>
+          <input type="time" id="TimeStartQuery" placeholder="4:00:am">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Time Finish:</label>
+        </td>
+        <td>
+          <input type="time" id="TimeFinishQuery" placeholder="6:00:am">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Instructor Id:</label>
+        </td>
+        <td>
+          <select id="instructorsQuery">
+            <option></option>
+          </select>
+
+
+
+
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>License Number:</label>
+        </td>
+        <td>
+          <input type="text" id="LicenseNumberQuery" maxlength="9 " placeholder="WMS 002">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Hours Driven Day:</label>
+        </td>
+        <td>
+          <input type="text" id="HoursDayQuery" placeholder="3">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Hours Driven Night:</label>
+        </td>
+        <td>
+          <input type="text" id="HoursNightQuery" placeholder="2">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Weather:</label>
+        </td>
+        <td>
+          <select id="weatherQuery">
+            <option></option>
+            <option value="clear">Clear</option>
+            <option value="rainy">Rainy</option>
+            <option value="thunder">Thunder</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Road Conditions:</label>
+        </td>
+        <td>
+          <select id="roadConditionQuery">
+            <option></option>
+            <option value="road">Road</option>
+            <option value="mainRoad">Main Road</option>
+            <option value="dirtRoad">dirtRoad</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Traffic Conditions:</label>
+        </td>
+        <td>
+          <select id="trafficQuery">
+            <option></option>
+            <option value="low ">Low</option>
+            <option value="medium ">Medium</option>
+            <option value="high ">High</option>
+          </select>
+        </td>
+      </tr>
+
+    </table>
+    <br>
+    <br>
+    <button onclick='querySearch()'>Save</button>
+
+
+  </div>
+
+  <script src="MajorProject.js "></script>
 
 </body>
 
