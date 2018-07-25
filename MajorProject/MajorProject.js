@@ -1,4 +1,4 @@
-//variables
+//variables for the table itself
 let dateCell;
 let odomStartCell;
 let odomFinCell;
@@ -12,38 +12,59 @@ let licenseNumCell;
 let hoursDrivenDayCell;
 let hoursDrivenNightCell;
 
-let instructorArray = [];
-let logbookArray = [];
+//Individual cell for a delete button for formatting sake.
+let deleteCell;
 
-let newLog;
 
-let totalHoursDriven = 0;
-let progressionPercentage = 0;
+//An object created for the use of firebase to save automatticaly online.
+let fire = {
+  instructorIdArray: [], //All the arrays which are in use for this project with the saved and appropiate data inside.
+  instructorNameArray: [],
+  logbookArray: []
+}
+
+let instructorIdArray = fire.instructorIdArray; //For ease of programming, variable is created which is equal to the firebase reference.
+let instructorNameArray = fire.instructorNameArray;
+let logbookArray = fire.logbookArray;
+
+// let instructorIdArray = [];
+// let instructorNameArray = [];
+// let logbookArray = [];
+
+let newLog; //A variabel which will later be used as an object for temporary data stroage before movement to an array
+
+let totalHoursDriven = 0; //A variabel which holds the totale hours driven
+let progressionPercentage = 0;//Calculating the percentage
+
+
+
 
 goToPage(mainPage);//Calls code to change page at beginning of program
 
-function goToPage(pageNumber) { //Basic code to be called when changing pages
+function goToPage(pageNumber) { /** This function is used to hide all the different pages and then shows a single page based on the parameter
+  Parameters: 
+    pagenumber(string) */
 
   document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages
   pageNumber.hidden = false;//shows page needed
 
 }
 
-function addNewInstructor() {
+function addNewInstructor(pageToGoTo) { //Adds the inputted instructors into an array for later user.
 
-
-  instructorArray.push(document.getElementById('instructorId').value);
+  instructorNameArray.push(document.getElementById("instructorName").value); //pushing the inputs into the arrays
+  instructorIdArray.push(document.getElementById('instructorId').value);
 
   document.getElementById('instructors');
 
+  var opt = instructorIdArray[instructorIdArray.length - 1];
+  var el = document.createElement("option");
+  el.textContent = opt;
+  el.value = opt;
+  document.getElementById('instructors').appendChild(el);
+  //document.getElementById('instructorsQuery').appendChild(el);
 
-  for (var i = 0; i < instructorArray.length; i++) {
-    var opt = instructorArray[i];
-    var el = document.createElement("option");
-    el.textContent = opt;
-    el.value = opt;
-    document.getElementById('instructors').appendChild(el);
-  }
+  goToPage(pageToGoTo);
 
 }
 
@@ -99,7 +120,7 @@ function checkCorrectPage() { //Checking if all formatting is corrct and correct
   }
   else if (document.getElementById('HoursDay').value != "" || document.getElementById('HoursDay').value != "") {
     console.log("Test10");
-    addNewRow();
+    addNewRow(); //After checking is correct, a new row is added
 
 
   }
@@ -111,18 +132,20 @@ function checkCorrectPage() { //Checking if all formatting is corrct and correct
   }
 }
 
-function querySearch() {
+function deleteRow(rowNumber) { //Deleteing element from an array and updating the table
 
-  document.getElementById('tbody').innerHTML = '';
+  logbookArray.splice(rowNumber, 1); //Taking out of array
+
+  document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
 
   var queryNewRow = document.getElementById('tbody').insertRow(0);
   queryNewRow.classList.add("w3-grey");
 
-  for (i = 0; i < logbookArray.length; i++) {
+  for (i = 0; i < logbookArray.length; i++) { //Looping throught the array
 
-    var LogTable = document.getElementById("logbook");
-    var row = LogTable.insertRow(LogTable.rows.length);
-    dateCell = row.insertCell(0);
+    var LogTable = document.getElementById("logbook"); //Accesing logbook
+    var row = LogTable.insertRow(LogTable.rows.length);//Inserting a new row
+    dateCell = row.insertCell(0); //Inserting the different cells 
     odomStartCell = row.insertCell(1);
     odomFinCell = row.insertCell(2);
     weatherCondCell = row.insertCell(3);
@@ -134,288 +157,195 @@ function querySearch() {
     licenseNumCell = row.insertCell(9);
     hoursDrivenDayCell = row.insertCell(10);
     hoursDrivenNightCell = row.insertCell(11);
+    deleteCell = row.insertCell(12);
+
+    fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
+
+  }
+
+}
+
+function fillCells(currentRow) { //Function to fill in respectvie cells
+
+  dateCell.innerHTML = logbookArray[currentRow].date; //Accesing the cell and filling in the cell with values from the array and the objects
+  odomStartCell.innerHTML = logbookArray[currentRow].odomArrayStart;
+  odomFinCell.innerHTML = logbookArray[currentRow].odomArrayFinish;
+  weatherCondCell.innerHTML = logbookArray[currentRow].weather;
+  roadCondCell.innerHTML = logbookArray[currentRow].road;
+  trafficCondCell.innerHTML = logbookArray[currentRow].traffic;
+  startTimeCell.innerHTML = logbookArray[currentRow].startTimeArray;
+  finishTimeCell.innerHTML = logbookArray[currentRow].finsishTimeArray;
+  instructorIdCell.innerHTML = logbookArray[currentRow].instructorArrayValue;
+  licenseNumCell.innerHTML = logbookArray[currentRow].license;
+  hoursDrivenDayCell.innerHTML = logbookArray[currentRow].hoursDrivenArray;
+  hoursDrivenNightCell.innerHTML = logbookArray[currentRow].hoursDrivenNightArray;
+  deleteCell.innerHTML = "<button onclick='deleteRow(" + currentRow + ")'>X</button>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
+
+}
 
 
-    if (document.getElementById("DateQuery").value != "") {
+function querySearch() {//Function to search the query for respective data
 
-      if (logbookArray[i].date === document.getElementById("DateQuery").value) {
+  document.getElementById('tbody').innerHTML = '';//clears the logbook table
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+  var queryNewRow = document.getElementById('tbody').insertRow(0);
+  queryNewRow.classList.add("w3-grey");
 
-      }
+  for (i = 0; i < logbookArray.length; i++) {//looping through the different rows
 
-    }
-    else if (document.getElementById("OdometerStartQuery").value != "") {
+    var LogTable = document.getElementById("logbook");
+    var row = LogTable.insertRow(LogTable.rows.length);//Creating new row
+    dateCell = row.insertCell(0);//Creating new cells
+    odomStartCell = row.insertCell(1);
+    odomFinCell = row.insertCell(2);
+    weatherCondCell = row.insertCell(3);
+    roadCondCell = row.insertCell(4);
+    trafficCondCell = row.insertCell(5);
+    startTimeCell = row.insertCell(6);
+    finishTimeCell = row.insertCell(7);
+    instructorIdCell = row.insertCell(8);
+    licenseNumCell = row.insertCell(9);
+    hoursDrivenDayCell = row.insertCell(10);
+    hoursDrivenNightCell = row.insertCell(11);
+    deleteCell = row.insertCell(12);
+    deleteCell.innerHTML = "<button onclick='deleteRow(" + i + ")'>X</button>"//adding a delete button which takes the current row as the paremeter
+    if (document.getElementById("DateQuery").value != "") {//Checking if input is empty
 
+      if (logbookArray[i].date === document.getElementById("DateQuery").value) {//Checking if the current row is equal to the inputed query search
 
-      if (logbookArray[i].odomArrayStart === document.getElementById("OdometerStartQuery").value) {
-
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
-
-      }
-
-    }
-    else if (document.getElementById("OdometerFinishQuery").value != "") {
-
-
-      if (logbookArray[i].odomArrayFinish === document.getElementById("OdometerFinishQuery").value) {
-
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("TimeStartQuery").value != "") {
+    else if (document.getElementById("OdometerStartQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].startTimeArray === document.getElementById("TimeStartQuery").value) {
+      if (logbookArray[i].odomArrayStart === document.getElementById("OdometerStartQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("TimeFinishQuery").value != "") {
+    else if (document.getElementById("OdometerFinishQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].finsishTimeArray === document.getElementById("TimeFinishQuery").value) {
+      if (logbookArray[i].odomArrayFinish === document.getElementById("OdometerFinishQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("instructorsQuery").value != "") {
+    else if (document.getElementById("TimeStartQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].instructorArray === document.getElementById("instructorsQuery").value) {
+      if (logbookArray[i].startTimeArray === document.getElementById("TimeStartQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("LicenseNumberQuery").value != "") {
+    else if (document.getElementById("TimeFinishQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].license === document.getElementById("LicenseNumberQuery").value) {
+      if (logbookArray[i].finsishTimeArray === document.getElementById("TimeFinishQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("HoursDayQuery").value != "") {
+    else if (document.getElementById("instructorsQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].hoursDrivenArray === document.getElementById("HoursDayQuery").value) {
+      if (logbookArray[i].instructorArray === document.getElementById("instructorsQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("HoursNightQuery").value != "") {
+    else if (document.getElementById("LicenseNumberQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].hoursDrivenNightArray === document.getElementById("HoursNightQuery").value) {
+      if (logbookArray[i].license === document.getElementById("LicenseNumberQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("weatherQuery").value != "") {
+    else if (document.getElementById("HoursDayQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].weather === document.getElementById("weatherQuery").value) {
+      if (logbookArray[i].hoursDrivenArray === document.getElementById("HoursDayQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("roadConditionQuery").value != "") {
+    else if (document.getElementById("HoursNightQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].road === document.getElementById("roadConditionQuery").value) {
+      if (logbookArray[i].hoursDrivenNightArray === document.getElementById("HoursNightQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
 
       }
 
     }
-    else if (document.getElementById("trafficQuery").value != "") {
+    else if (document.getElementById("weatherQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].traffic === document.getElementById("trafficQuery").value) {
+      if (logbookArray[i].weather === document.getElementById("weatherQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        dateCell.innerHTML = logbookArray[i].date;
-        odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-        odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-        weatherCondCell.innerHTML = logbookArray[i].weather;
-        roadCondCell.innerHTML = logbookArray[i].road;
-        trafficCondCell.innerHTML = logbookArray[i].traffic;
-        startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-        finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-        instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-        licenseNumCell.innerHTML = logbookArray[i].license;
-        hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-        hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+        fillCells(i);
+
+      }
+
+    }
+    else if (document.getElementById("roadConditionQuery").value != "") {//Checking if input is empty
+
+
+      if (logbookArray[i].road === document.getElementById("roadConditionQuery").value) {//Checking if the current row is equal to the inputed query search
+
+        fillCells(i);
+
+      }
+
+    }
+    else if (document.getElementById("trafficQuery").value != "") {//Checking if input is empty
+
+
+      if (logbookArray[i].traffic === document.getElementById("trafficQuery").value) {//Checking if the current row is equal to the inputed query search
+
+        fillCells(i);
 
       }
 
     }
     else {
-      dateCell.innerHTML = logbookArray[i].date;
-      odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-      odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-      weatherCondCell.innerHTML = logbookArray[i].weather;
-      roadCondCell.innerHTML = logbookArray[i].road;
-      trafficCondCell.innerHTML = logbookArray[i].traffic;
-      startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-      finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-      instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-      licenseNumCell.innerHTML = logbookArray[i].license;
-      hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-      hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+      fillCells(i);
 
 
     }
   }
-  goToPage(logbookPage);
+  goToPage(logbookPage); //Going to the logbook
 
 }
 
-function addNewRow() {
-  document.getElementById('tbody').innerHTML = '';
+function addNewRow() { //Adding in a new row
+  document.getElementById('tbody').innerHTML = ''; //Clearing table
 
   var queryNewRow = document.getElementById('tbody').insertRow(0);
   queryNewRow.classList.add("w3-grey");
 
 
-  newLog = {
+  newLog = {//Adding in the inputted data into an object
     date: document.getElementById('Date').value,
     odomArrayStart: document.getElementById('OdometerStart').value,
     odomArrayFinish: document.getElementById('OdometerFinish').value,
@@ -430,10 +360,10 @@ function addNewRow() {
     hoursDrivenNightArray: document.getElementById('HoursNight').value
 
   }
-  logbookArray.push(newLog);
+  logbookArray.push(newLog);//Adding the object into an array
   console.log(logbookArray[logbookArray.length - 1]);
 
-  for (i = 0; i < logbookArray.length; i++) {
+  for (i = 0; i < logbookArray.length; i++) {//Looping through all values in array
 
     var LogTable = document.getElementById("logbook");
     var row = LogTable.insertRow(LogTable.rows.length);
@@ -449,19 +379,9 @@ function addNewRow() {
     licenseNumCell = row.insertCell(9);
     hoursDrivenDayCell = row.insertCell(10);
     hoursDrivenNightCell = row.insertCell(11);
+    deleteCell = row.insertCell(12);
 
-    dateCell.innerHTML = logbookArray[i].date;
-    odomStartCell.innerHTML = logbookArray[i].odomArrayStart;
-    odomFinCell.innerHTML = logbookArray[i].odomArrayFinish;
-    weatherCondCell.innerHTML = logbookArray[i].weather;
-    roadCondCell.innerHTML = logbookArray[i].road;
-    trafficCondCell.innerHTML = logbookArray[i].traffic;
-    startTimeCell.innerHTML = logbookArray[i].startTimeArray;
-    finishTimeCell.innerHTML = logbookArray[i].finsishTimeArray;
-    instructorIdCell.innerHTML = logbookArray[i].instructorArrayValue;
-    licenseNumCell.innerHTML = logbookArray[i].license;
-    hoursDrivenDayCell.innerHTML = logbookArray[i].hoursDrivenArray;
-    hoursDrivenNightCell.innerHTML = logbookArray[i].hoursDrivenNightArray;
+    fillCells(i); //filling the cells with data
 
 
 
@@ -475,10 +395,9 @@ function addNewRow() {
 
   calculateStats();
 
-  document.getElementById('Date').value = "";
+  document.getElementById('Date').value = ""; //clearing the data in the input form for later use
   document.getElementById('OdometerStart').value = "";
   document.getElementById('OdometerFinish').value = "";
-  document.getElementById('weather').value = "";
   document.getElementById('roadCondition').value = "";
   document.getElementById('traffic').value = "";
   document.getElementById('TimeStart').value = "";
@@ -488,7 +407,7 @@ function addNewRow() {
   document.getElementById('HoursDay').value = "";
   document.getElementById('HoursNight').value = "";
 
-  goToPage(logbookPage);
+  goToPage(logbookPage);//going back to the logbook
 
 }
 

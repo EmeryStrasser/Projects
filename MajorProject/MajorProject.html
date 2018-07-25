@@ -24,13 +24,13 @@
   <div class="pages w3-center" id="mainPage">
 
 
-    <button onclick="goToPage(logbookPage)">Logbook Page</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(logbookPage)">Logbook Page</button>
     <br>
     <br>
-    <button>Statistics</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey">Statistics</button>
     <br>
     <br>
-    <button onclick="goToPage(instructorPage)">Update Instructors</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage)">Update Instructors</button>
 
 
 
@@ -38,18 +38,21 @@
 
   <div class="pages w3-center" id="instructorPage">
 
-
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(mainPage)">Cancel</button>
     <input type="text" id="instructorId" placeholder="ID">
     <input type="text" id="instructorName" placeholder="Name">
     <br>
-    <button onclick="addNewInstructor(), goToPage(mainPage)">Save</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="addNewInstructor(), goToPage(mainPage)">Save</button>
   </div>
 
 
+
+
   <div class="pages w3-center" id="logbookPage">
-    <button onclick='goToPage(inputPage)' class="w3-button w3-circle w3-light-grey">+</button>
-    <button onclick='addNewRow()'>new</button>
-    <button onclick="goToPage(queryPage)">query</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(mainPage)">Back</button>
+    <button onclick='goToPage(inputPage)' class="w3-button w3-round-xlarge w3-light-grey">New Log</button>
+    <!-- <button onclick='addNewRow()'>new</button> -->
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(queryPage)">Query</button>
     <br>
     <br>
     <div class="w3-responsive">
@@ -68,11 +71,14 @@
             <th>License Number</th>
             <th>Hours Driven Day</th>
             <th>Hours Driven Night</th>
+            <th></th>
           </tr>
         </thead>
 
         <tbody id="tbody">
-          <tr class="w3-grey"></tr>
+          <tr class="w3-grey">
+
+          </tr>
         </tbody>
       </table>
     </div>
@@ -87,6 +93,7 @@
   </div>
 
   <div class="pages w3-center" id="inputPage">
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(logbookPage)">Cancel</button>
     <table class="inputTable">
 
       <tr>
@@ -143,7 +150,7 @@
           </select>
 
 
-          <button onclick="goToPage(instructorPage)">Add Instructor</button>
+          <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage)">Add Instructor</button>
 
         </td>
       </tr>
@@ -220,7 +227,7 @@
     </table>
     <br>
     <br>
-    <button onclick='checkCorrectPage()'>Save</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick='checkCorrectPage()'>Save</button>
 
   </div>
 
@@ -359,10 +366,25 @@
     </table>
     <br>
     <br>
-    <button onclick='querySearch()'>Save</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick='querySearch()'>Save</button>
 
 
   </div>
+
+
+  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBbCgzY2X2zBZlzdX3WHquv0RAjiRHmtgU",
+      authDomain: "learnerdriver-4d31f.firebaseapp.com",
+      databaseURL: "https://learnerdriver-4d31f.firebaseio.com",
+      projectId: "learnerdriver-4d31f",
+      storageBucket: "",
+      messagingSenderId: "672094464196"
+    };
+    firebase.initializeApp(config);
+  </script>
 
   <script src="MajorProject.js "></script>
 
