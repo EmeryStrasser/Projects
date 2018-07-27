@@ -15,6 +15,7 @@ let hoursDrivenNightCell;
 //Individual cell for a delete button for formatting sake.
 let deleteCell;
 
+let pageFromInstructor;
 
 //An object created for the use of firebase to save automatticaly online.
 let fire = {
@@ -41,16 +42,31 @@ let progressionPercentage = 0;//Calculating the percentage
 
 goToPage(mainPage);//Calls code to change page at beginning of program
 
-function goToPage(pageNumber) { /** This function is used to hide all the different pages and then shows a single page based on the parameter
-  Parameters: 
-    pagenumber(string) */
+function pageFromInstructorPage(pageWanted) {
+
+  pageFromInstructor = pageWanted;
+
+
+}
+
+
+
+
+
+/** This function is used to hide all the different pages and then shows a single page based on the parameter
+ Parameters: 
+   pagenumber(string) - Allows the choice of choosing what page to show
+ Return: 
+   Returns null */
+
+function goToPage(pageNumber) {
 
   document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages
   pageNumber.hidden = false;//shows page needed
 
 }
 
-function addNewInstructor(pageToGoTo) { //Adds the inputted instructors into an array for later user.
+function addNewInstructor() { //Adds the inputted instructors into an array for later user.
 
   instructorNameArray.push(document.getElementById("instructorName").value); //pushing the inputs into the arrays
   instructorIdArray.push(document.getElementById('instructorId').value);
@@ -64,7 +80,7 @@ function addNewInstructor(pageToGoTo) { //Adds the inputted instructors into an 
   document.getElementById('instructors').appendChild(el);
   //document.getElementById('instructorsQuery').appendChild(el);
 
-  goToPage(pageToGoTo);
+  goToPage(pageFromInstructor);
 
 }
 
@@ -139,11 +155,11 @@ function deleteRow(rowNumber) { //Deleteing element from an array and updating t
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
 
   var queryNewRow = document.getElementById('tbody').insertRow(0);
-  queryNewRow.classList.add("w3-grey");
+  queryNewRow.classList.add("w3-light-grey");
 
   for (i = 0; i < logbookArray.length; i++) { //Looping throught the array
 
-    var LogTable = document.getElementById("logbook"); //Accesing logbook
+    var LogTable = document.getElementById("logbook"); //Accesing logbooks
     var row = LogTable.insertRow(LogTable.rows.length);//Inserting a new row
     dateCell = row.insertCell(0); //Inserting the different cells 
     odomStartCell = row.insertCell(1);
@@ -179,7 +195,7 @@ function fillCells(currentRow) { //Function to fill in respectvie cells
   licenseNumCell.innerHTML = logbookArray[currentRow].license;
   hoursDrivenDayCell.innerHTML = logbookArray[currentRow].hoursDrivenArray;
   hoursDrivenNightCell.innerHTML = logbookArray[currentRow].hoursDrivenNightArray;
-  deleteCell.innerHTML = "<button onclick='deleteRow(" + currentRow + ")'>X</button>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
+  deleteCell.innerHTML = "<button class='w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'>Remove</button>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
 
 }
 
@@ -189,7 +205,7 @@ function querySearch() {//Function to search the query for respective data
   document.getElementById('tbody').innerHTML = '';//clears the logbook table
 
   var queryNewRow = document.getElementById('tbody').insertRow(0);
-  queryNewRow.classList.add("w3-grey");
+  queryNewRow.classList.add("w3-light-grey");
 
   for (i = 0; i < logbookArray.length; i++) {//looping through the different rows
 
@@ -342,7 +358,7 @@ function addNewRow() { //Adding in a new row
   document.getElementById('tbody').innerHTML = ''; //Clearing table
 
   var queryNewRow = document.getElementById('tbody').insertRow(0);
-  queryNewRow.classList.add("w3-grey");
+  queryNewRow.classList.add("w3-light-grey");
 
 
   newLog = {//Adding in the inputted data into an object
@@ -388,9 +404,6 @@ function addNewRow() { //Adding in a new row
 
 
   }
-
-
-
 
 
   calculateStats();

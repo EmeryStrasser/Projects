@@ -30,7 +30,7 @@
     <button class="w3-button w3-round-xlarge w3-light-grey">Statistics</button>
     <br>
     <br>
-    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage)">Update Instructors</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage), pageFromInstructorPage(mainPage)">Update Instructors</button>
 
 
 
@@ -42,7 +42,7 @@
     <input type="text" id="instructorId" placeholder="ID">
     <input type="text" id="instructorName" placeholder="Name">
     <br>
-    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="addNewInstructor(), goToPage(mainPage)">Save</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="addNewInstructor()">Save</button>
   </div>
 
 
@@ -51,7 +51,7 @@
   <div class="pages w3-center" id="logbookPage">
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(mainPage)">Back</button>
     <button onclick='goToPage(inputPage)' class="w3-button w3-round-xlarge w3-light-grey">New Log</button>
-    <!-- <button onclick='addNewRow()'>new</button> -->
+    <button onclick='addNewRow()'>new</button>
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(queryPage)">Query</button>
     <br>
     <br>
@@ -76,7 +76,7 @@
         </thead>
 
         <tbody id="tbody">
-          <tr class="w3-grey">
+          <tr class="w3-light-grey">
 
           </tr>
         </tbody>
@@ -150,7 +150,7 @@
           </select>
 
 
-          <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage)">Add Instructor</button>
+          <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage), pageFromInstructorPage(inputPage)">Add Instructor</button>
 
         </td>
       </tr>
