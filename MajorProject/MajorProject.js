@@ -17,25 +17,77 @@ let deleteCell;
 
 let pageFromInstructor;
 
+
+
 //An object created for the use of firebase to save automatticaly online.
-let fire = {
-  instructorIdArray: [], //All the arrays which are in use for this project with the saved and appropiate data inside.
-  instructorNameArray: [],
-  logbookArray: []
-}
 
-let instructorIdArray = fire.instructorIdArray; //For ease of programming, variable is created which is equal to the firebase reference.
-let instructorNameArray = fire.instructorNameArray;
-let logbookArray = fire.logbookArray;
+// let fire = {
+//   instructorIdArray: [], //All the arrays which are in use for this project with the saved and appropiate data inside.
+//   instructorNameArray: [],
+//   logbookArray: []
+// }
 
-// let instructorIdArray = [];
-// let instructorNameArray = [];
-// let logbookArray = [];
+// let instructorIdArray = fire.instructorIdArray; //For ease of programming, variable is created which is equal to the firebase reference.
+// let instructorNameArray = fire.instructorNameArray;
+// let logbookArray = fire.logbookArray;
+
+
+let instructorIdArray = [];
+let instructorNameArray = [];
+let logbookArray = [];
+
+
+let database = firebase.database();
+
+let logRef = database.ref('/logbook');
+let instIDRef = database.ref('/instructorsID');
+let instNameRef = database.ref('/instructorsName');
+
 
 let newLog; //A variabel which will later be used as an object for temporary data stroage before movement to an array
 
 let totalHoursDriven = 0; //A variabel which holds the totale hours driven
 let progressionPercentage = 0;//Calculating the percentage
+
+
+logRef.once('value').then((data) => { logbookArray = data.val(); });
+instIDRef.once('value').then((data) => { instructorIdArray = data.val(); });
+instNameRef.once('value').then((data) => { instructorNameArray = data.val(); });
+
+
+
+
+function reload() {
+  if (logbookArray == null) logbookArray = [];
+  logRef.update(logbookArray);
+  document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
+  var testRow = document.getElementById('tbody').insertRow(0);
+  testRow.classList.add("w3-light-grey");
+
+  for (i = 0; i < logbookArray.length; i++) { //Looping throught the array
+
+    var LogTable = document.getElementById("logbook"); //Accesing logbooks
+    var row = LogTable.insertRow(LogTable.rows.length);//Inserting a new row
+    dateCell = row.insertCell(0); //Inserting the different cells 
+    odomStartCell = row.insertCell(1);
+    odomFinCell = row.insertCell(2);
+    weatherCondCell = row.insertCell(3);
+    roadCondCell = row.insertCell(4);
+    trafficCondCell = row.insertCell(5);
+    startTimeCell = row.insertCell(6);
+    finishTimeCell = row.insertCell(7);
+    instructorIdCell = row.insertCell(8);
+    licenseNumCell = row.insertCell(9);
+    hoursDrivenDayCell = row.insertCell(10);
+    hoursDrivenNightCell = row.insertCell(11);
+    deleteCell = row.insertCell(12);
+
+    fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
+
+  }
+
+}
+
 
 
 
@@ -68,6 +120,8 @@ function goToPage(pageNumber) {
 
 function addNewInstructor() { //Adds the inputted instructors into an array for later user.
 
+  if (instructorNameArray == null) instructorNameArray = [];
+  if (instructorIdArray == null) instructorIdArray = [];
   instructorNameArray.push(document.getElementById("instructorName").value); //pushing the inputs into the arrays
   instructorIdArray.push(document.getElementById('instructorId').value);
 
@@ -150,33 +204,38 @@ function checkCorrectPage() { //Checking if all formatting is corrct and correct
 
 function deleteRow(rowNumber) { //Deleteing element from an array and updating the table
 
-  logbookArray.splice(rowNumber, 1); //Taking out of array
+  if (confirm('Are you sure you want to remove from database')) {
+    logbookArray.splice(rowNumber, 1); //Taking out of array
 
-  document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
 
-  var queryNewRow = document.getElementById('tbody').insertRow(0);
-  queryNewRow.classList.add("w3-light-grey");
 
-  for (i = 0; i < logbookArray.length; i++) { //Looping throught the array
+    document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
 
-    var LogTable = document.getElementById("logbook"); //Accesing logbooks
-    var row = LogTable.insertRow(LogTable.rows.length);//Inserting a new row
-    dateCell = row.insertCell(0); //Inserting the different cells 
-    odomStartCell = row.insertCell(1);
-    odomFinCell = row.insertCell(2);
-    weatherCondCell = row.insertCell(3);
-    roadCondCell = row.insertCell(4);
-    trafficCondCell = row.insertCell(5);
-    startTimeCell = row.insertCell(6);
-    finishTimeCell = row.insertCell(7);
-    instructorIdCell = row.insertCell(8);
-    licenseNumCell = row.insertCell(9);
-    hoursDrivenDayCell = row.insertCell(10);
-    hoursDrivenNightCell = row.insertCell(11);
-    deleteCell = row.insertCell(12);
+    var queryNewRow = document.getElementById('tbody').insertRow(0);
+    queryNewRow.classList.add("w3-light-grey");
 
-    fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
+    for (i = 0; i < logbookArray.length; i++) { //Looping throught the array
 
+      var LogTable = document.getElementById("logbook"); //Accesing logbooks
+      var row = LogTable.insertRow(LogTable.rows.length);//Inserting a new row
+      dateCell = row.insertCell(0); //Inserting the different cells 
+      odomStartCell = row.insertCell(1);
+      odomFinCell = row.insertCell(2);
+      weatherCondCell = row.insertCell(3);
+      roadCondCell = row.insertCell(4);
+      trafficCondCell = row.insertCell(5);
+      startTimeCell = row.insertCell(6);
+      finishTimeCell = row.insertCell(7);
+      instructorIdCell = row.insertCell(8);
+      licenseNumCell = row.insertCell(9);
+      hoursDrivenDayCell = row.insertCell(10);
+      hoursDrivenNightCell = row.insertCell(11);
+      deleteCell = row.insertCell(12);
+
+      fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
+
+    }
+    logRef.update(logbookArray);
   }
 
 }
@@ -196,6 +255,8 @@ function fillCells(currentRow) { //Function to fill in respectvie cells
   hoursDrivenDayCell.innerHTML = logbookArray[currentRow].hoursDrivenArray;
   hoursDrivenNightCell.innerHTML = logbookArray[currentRow].hoursDrivenNightArray;
   deleteCell.innerHTML = "<button class='w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'>Remove</button>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
+
+
 
 }
 
@@ -376,8 +437,14 @@ function addNewRow() { //Adding in a new row
     hoursDrivenNightArray: document.getElementById('HoursNight').value
 
   }
+
+
+  if (logbookArray == null) logbookArray = [];
   logbookArray.push(newLog);//Adding the object into an array
+
+  logRef.update(logbookArray);
   console.log(logbookArray[logbookArray.length - 1]);
+  console.log(logbookArray);
 
   for (i = 0; i < logbookArray.length; i++) {//Looping through all values in array
 
@@ -398,8 +465,6 @@ function addNewRow() { //Adding in a new row
     deleteCell = row.insertCell(12);
 
     fillCells(i); //filling the cells with data
-
-
 
 
 
@@ -425,6 +490,9 @@ function addNewRow() { //Adding in a new row
 }
 
 function calculateStats() {
+
+
+
 
   totalHoursDriven += Number(document.getElementById('HoursDay').value) + Number(document.getElementById('HoursNight').value);
   document.getElementById('currentHours').innerHTML = totalHoursDriven;
