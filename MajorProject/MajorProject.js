@@ -50,16 +50,20 @@ let totalHoursDriven = 0; //A variabel which holds the totale hours driven
 let progressionPercentage = 0;//Calculating the percentage
 
 
-logRef.once('value').then((data) => { logbookArray = data.val(); });
+// logRef.once('value').then((data) => { logbookArray = data.val(); });
 instIDRef.once('value').then((data) => { instructorIdArray = data.val(); });
 instNameRef.once('value').then((data) => { instructorNameArray = data.val(); });
 
 
+logRef.once('value').then(reload);
 
 
-function reload() {
+
+
+function reload(data) {
   if (logbookArray == null) logbookArray = [];
-  logRef.update(logbookArray);
+  logbookArray = data.val();
+
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
   var testRow = document.getElementById('tbody').insertRow(0);
   testRow.classList.add("w3-light-grey");
@@ -132,6 +136,14 @@ function addNewInstructor() { //Adds the inputted instructors into an array for 
   el.textContent = opt;
   el.value = opt;
   document.getElementById('instructors').appendChild(el);
+
+  var optQuery = instructorIdArray[instructorIdArray.length - 1];
+  var elQuery = document.createElement("option");
+  elQuery.textContent = opt;
+  elQuery.value = opt;
+  document.getElementById('instructorsQuery').appendChild(elQuery);
+
+
   //document.getElementById('instructorsQuery').appendChild(el);
 
   goToPage(pageFromInstructor);
@@ -206,7 +218,7 @@ function deleteRow(rowNumber) { //Deleteing element from an array and updating t
 
   if (confirm('Are you sure you want to remove from database')) {
     logbookArray.splice(rowNumber, 1); //Taking out of array
-
+    logRef.set(logbookArray);
 
 
     document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
@@ -235,7 +247,7 @@ function deleteRow(rowNumber) { //Deleteing element from an array and updating t
       fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
 
     }
-    logRef.update(logbookArray);
+
   }
 
 }
@@ -254,9 +266,9 @@ function fillCells(currentRow) { //Function to fill in respectvie cells
   licenseNumCell.innerHTML = logbookArray[currentRow].license;
   hoursDrivenDayCell.innerHTML = logbookArray[currentRow].hoursDrivenArray;
   hoursDrivenNightCell.innerHTML = logbookArray[currentRow].hoursDrivenNightArray;
-  deleteCell.innerHTML = "<button class='w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'>Remove</button>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
+  // deleteCell.innerHTML = "<button class='w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'>Remove</button>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
 
-
+  deleteCell.innerHTML = "<i class='fas fa-trash-alt w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'></i>"
 
 }
 
@@ -285,7 +297,7 @@ function querySearch() {//Function to search the query for respective data
     hoursDrivenDayCell = row.insertCell(10);
     hoursDrivenNightCell = row.insertCell(11);
     deleteCell = row.insertCell(12);
-    deleteCell.innerHTML = "<button onclick='deleteRow(" + i + ")'>X</button>"//adding a delete button which takes the current row as the paremeter
+    deleteCell.innerHTML = "<button class='w3-button w3-round-xlarge' onclick='deleteRow(" + i + ")'>Remove</button>"//adding a delete button which takes the current row as the paremeter
     if (document.getElementById("DateQuery").value != "") {//Checking if input is empty
 
       if (logbookArray[i].date === document.getElementById("DateQuery").value) {//Checking if the current row is equal to the inputed query search
@@ -434,8 +446,8 @@ function addNewRow() { //Adding in a new row
     instructorArrayValue: document.getElementById('instructors').value,
     license: document.getElementById('LicenseNumber').value,
     hoursDrivenArray: document.getElementById('HoursDay').value,
-    hoursDrivenNightArray: document.getElementById('HoursNight').value
-
+    hoursDrivenNightArray: document.getElementById('HoursNight').value,
+    i: logbookArray.length
   }
 
 
