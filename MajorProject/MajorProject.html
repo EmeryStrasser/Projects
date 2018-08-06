@@ -13,12 +13,12 @@
 <body class="w3-dark-grey">
   <br>
   <div class="w3-light-grey w3-round">
-    <div id="progression" class="w3-container w3-round w3-blue" style="width:0%">25%</div>
+    <div id="progression" class="w3-container w3-round w3-Blue-Gray" style="width:0%">0%</div>
   </div>
   <h1 class="w3-grey">
     Learner Driver LogBook
     <span id="progressBar">
-      <span id="currentHours">0 </span>/120
+      <span id="currentHours">0</span>/120
     </span>
 
   </h1>
@@ -29,12 +29,12 @@
   <div class="pages w3-center" id="mainPage">
 
 
-    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(logbookPage), reload()">Logbook Page</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(logbookPage)">Logbook Page</button>
     <br>
     <br>
-    <button class="w3-button w3-round-xlarge w3-light-grey">Statistics</button>
+    <!-- <button class="w3-button w3-round-xlarge w3-light-grey">Statistics</button>
     <br>
-    <br>
+    <br> -->
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage), pageFromInstructorPage(mainPage)">Update Instructors</button>
 
 
@@ -43,9 +43,9 @@
 
   <div class="pages w3-center" id="instructorPage">
 
-    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(mainPage)">Cancel</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(pageFromInstructor)">Cancel</button>
     <input type="text" id="instructorId" placeholder="ID">
-    <input type="text" id="instructorName" placeholder="Name">
+    <!-- <input type="text" id="instructorName" placeholder="Name"> -->
     <br>
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="addNewInstructor()">Save</button>
   </div>
@@ -54,7 +54,7 @@
 
 
   <div class="pages w3-center" id="logbookPage">
-    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(mainPage)">Back</button>
+    <button class="w3-button w3-round-xlarge w3-light-grey" onclick="querySearch(), goToPage(mainPage)">Back</button>
     <button onclick='goToPage(inputPage)' class="w3-button w3-round-xlarge w3-light-grey">New Log</button>
     <button onclick='addNewRow()'>new</button>
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(queryPage)">Query</button>
@@ -152,7 +152,10 @@
         </td>
         <td>
           <select id="instructors">
+
             <option></option>
+
+
           </select>
 
 

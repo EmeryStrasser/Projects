@@ -17,23 +17,8 @@ let deleteCell;
 
 let pageFromInstructor;
 
-
-
-//An object created for the use of firebase to save automatticaly online.
-
-// let fire = {
-//   instructorIdArray: [], //All the arrays which are in use for this project with the saved and appropiate data inside.
-//   instructorNameArray: [],
-//   logbookArray: []
-// }
-
-// let instructorIdArray = fire.instructorIdArray; //For ease of programming, variable is created which is equal to the firebase reference.
-// let instructorNameArray = fire.instructorNameArray;
-// let logbookArray = fire.logbookArray;
-
-
 let instructorIdArray = [];
-let instructorNameArray = [];
+// let instructorNameArray = [];
 let logbookArray = [];
 
 
@@ -44,18 +29,19 @@ let instIDRef = database.ref('/instructorsID');
 let instNameRef = database.ref('/instructorsName');
 
 
-let newLog; //A variabel which will later be used as an object for temporary data stroage before movement to an array
+let newLog; //A variable which will later be used as an object for temporary data stroage before movement to an array
 
 let totalHoursDriven = 0; //A variabel which holds the totale hours driven
 let progressionPercentage = 0;//Calculating the percentage
 
 
 // logRef.once('value').then((data) => { logbookArray = data.val(); });
-instIDRef.once('value').then((data) => { instructorIdArray = data.val(); });
-instNameRef.once('value').then((data) => { instructorNameArray = data.val(); });
+// instIDRef.once('value').then((data) => { instructorIdArray = data.val(); });
+// instNameRef.once('value').then((data) => { instructorNameArray = data.val(); });
 
 
 logRef.once('value').then(reload);
+instIDRef.once('value').then(loopThroughInstructors);
 
 
 
@@ -87,7 +73,7 @@ function reload(data) {
     deleteCell = row.insertCell(12);
 
     fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-
+    calculateStats();
   }
 
 }
@@ -124,9 +110,11 @@ function goToPage(pageNumber) {
 
 function addNewInstructor() { //Adds the inputted instructors into an array for later user.
 
-  if (instructorNameArray == null) instructorNameArray = [];
+  // if (instructorNameArray == null) instructorNameArray = [];
   if (instructorIdArray == null) instructorIdArray = [];
-  instructorNameArray.push(document.getElementById("instructorName").value); //pushing the inputs into the arrays
+
+
+  // instructorNameArray.push(document.getElementById("instructorName").value); //pushing the inputs into the arrays
   instructorIdArray.push(document.getElementById('instructorId').value);
 
   document.getElementById('instructors');
@@ -147,6 +135,40 @@ function addNewInstructor() { //Adds the inputted instructors into an array for 
   //document.getElementById('instructorsQuery').appendChild(el);
 
   goToPage(pageFromInstructor);
+  instIDRef.update(instructorIdArray);
+  // instNameRef.update(instructorNameArray);
+  document.getElementById("instructorId").value = "";
+
+}
+
+
+function loopThroughInstructors(data) {
+
+  instructorIdArray = data.val();
+  document.getElementById('instructors').innerHTML = "";
+
+
+  for (var i = 0; i < instructorIdArray.length; i++) {
+    console.log(instructorIdArray[i])
+
+    var opt = instructorIdArray[i];
+    var optQuery = instructorIdArray[i];
+
+    var el = document.createElement("option");
+    var elQuery = document.createElement("option");
+
+    el.textContent = opt;
+    elQuery.textContent = optQuery;
+
+    el.value = opt;
+    elQuery.value = optQuery;
+
+    document.getElementById('instructors').appendChild(el);
+    document.getElementById('instructorsQuery').appendChild(elQuery);
+
+
+  }
+
 
 }
 
@@ -221,6 +243,7 @@ function deleteRow(rowNumber) { //Deleteing element from an array and updating t
     logRef.set(logbookArray);
 
 
+
     document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
 
     var queryNewRow = document.getElementById('tbody').insertRow(0);
@@ -243,6 +266,7 @@ function deleteRow(rowNumber) { //Deleteing element from an array and updating t
       hoursDrivenDayCell = row.insertCell(10);
       hoursDrivenNightCell = row.insertCell(11);
       deleteCell = row.insertCell(12);
+
 
       fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
 
@@ -297,7 +321,7 @@ function querySearch() {//Function to search the query for respective data
     hoursDrivenDayCell = row.insertCell(10);
     hoursDrivenNightCell = row.insertCell(11);
     deleteCell = row.insertCell(12);
-    deleteCell.innerHTML = "<button class='w3-button w3-round-xlarge' onclick='deleteRow(" + i + ")'>Remove</button>"//adding a delete button which takes the current row as the paremeter
+    deleteCell.innerHTML = "<i class='fas fa-trash-alt w3-button w3-round-xlarge' onclick='deleteRow(" + i + ")'></i>"//adding a delete button which takes the current row as the paremeter
     if (document.getElementById("DateQuery").value != "") {//Checking if input is empty
 
       if (logbookArray[i].date === document.getElementById("DateQuery").value) {//Checking if the current row is equal to the inputed query search
@@ -350,8 +374,8 @@ function querySearch() {//Function to search the query for respective data
     else if (document.getElementById("instructorsQuery").value != "") {//Checking if input is empty
 
 
-      if (logbookArray[i].instructorArray === document.getElementById("instructorsQuery").value) {//Checking if the current row is equal to the inputed query search
-
+      if (logbookArray[i].instructorArrayValue === document.getElementById("instructorsQuery").value) {//Checking if the current row is equal to the inputed query search
+        console.log("It is");
         fillCells(i);
 
       }
@@ -425,14 +449,31 @@ function querySearch() {//Function to search the query for respective data
   }
   goToPage(logbookPage); //Going to the logbook
 
+  document.getElementById('DateQuery').value = ""; //clearing the data in the input form for later use
+  document.getElementById('OdometerStartQuery').value = "";
+  document.getElementById('OdometerFinishQuery').value = "";
+  document.getElementById('roadConditionQuery').value = "";
+  document.getElementById('trafficQuery').value = "";
+  document.getElementById('TimeStartQuery').value = "";
+  document.getElementById('TimeFinishQuery').value = "";
+  document.getElementById('instructorsQuery').value = "";
+  document.getElementById('LicenseNumberQuery').value = "";
+  document.getElementById('HoursDayQuery').value = "";
+  document.getElementById('HoursNightQuery').value = "";
+
+
+
+
 }
+
+
 
 function addNewRow() { //Adding in a new row
   document.getElementById('tbody').innerHTML = ''; //Clearing table
 
   var queryNewRow = document.getElementById('tbody').insertRow(0);
   queryNewRow.classList.add("w3-light-grey");
-
+  if (logbookArray == null) logbookArray = [];
 
   newLog = {//Adding in the inputted data into an object
     date: document.getElementById('Date').value,
@@ -451,7 +492,7 @@ function addNewRow() { //Adding in a new row
   }
 
 
-  if (logbookArray == null) logbookArray = [];
+
   logbookArray.push(newLog);//Adding the object into an array
 
   logRef.update(logbookArray);
@@ -503,15 +544,37 @@ function addNewRow() { //Adding in a new row
 
 function calculateStats() {
 
+  totalHoursDriven = 0;
+
+  for (a = 0; a < logbookArray.length; a++) {
+
+    totalHoursDriven = Number(logbookArray[a].hoursDrivenArray) + Number(logbookArray[a].hoursDrivenNightArray) + totalHoursDriven;
 
 
-
-  totalHoursDriven += Number(document.getElementById('HoursDay').value) + Number(document.getElementById('HoursNight').value);
+  }
+  progressionPercentage = (totalHoursDriven / 120) * 100;
+  document.getElementById('progression').style.width = progressionPercentage + "%";
+  document.getElementById('progression').innerHTML = Math.round(progressionPercentage) + "%";
   document.getElementById('currentHours').innerHTML = totalHoursDriven;
 
-  progressionPercentage = (totalHoursDriven / 120) * 100;
-  console.log(progressionPercentage);
-  document.getElementById('progression').style.width = progressionPercentage + "%";
+
+  if (totalHoursDriven === 0) {
+    console.log("less than 0")
+    document.getElementById('progression').hidden = true;
+
+  } else {
+
+    document.getElementById('progression').hidden = false;
+    console.log("more than 0")
+  }
+  // totalHoursDriven += Number(document.getElementById('HoursDay').value) + Number(document.getElementById('HoursNight').value);
+  // document.getElementById('currentHours').innerHTML = totalHoursDriven;
+
+
+
+  ;
+
+
 
 }
 
