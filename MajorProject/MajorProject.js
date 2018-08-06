@@ -84,6 +84,13 @@ function reload(data) {
 
 goToPage(mainPage);//Calls code to change page at beginning of program
 
+
+/** This function is used to record the page which has been used to navigate to the instricturs oage, so page
+ * so that when the user goes out of the page, it will take him to the last page he was at
+ * Parameter:
+ *  mainPage(pageWanted) - The page that the user was previously on
+ * Returns null
+  */
 function pageFromInstructorPage(pageWanted) {
 
   pageFromInstructor = pageWanted;
@@ -103,11 +110,13 @@ function pageFromInstructorPage(pageWanted) {
 
 function goToPage(pageNumber) {
 
-  document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages
+  document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages with a class of pages
   pageNumber.hidden = false;//shows page needed
 
 }
 
+
+/** This function */
 function addNewInstructor() { //Adds the inputted instructors into an array for later user.
 
   // if (instructorNameArray == null) instructorNameArray = [];
