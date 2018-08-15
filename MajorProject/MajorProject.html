@@ -56,7 +56,7 @@
   <div class="pages w3-center" id="logbookPage">
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="querySearch(), goToPage(mainPage)">Back</button>
     <button onclick='goToPage(inputPage)' class="w3-button w3-round-xlarge w3-light-grey">New Log</button>
-    <button onclick='addNewRow()'>new</button>
+
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(queryPage)">Query</button>
 
     <br>
@@ -198,9 +198,11 @@
         <td>
           <select id="weather">
             <option></option>
-            <option value="clear">Clear</option>
-            <option value="rainy">Rainy</option>
-            <option value="thunder">Thunder</option>
+            <option value="Fine">Clear</option>
+            <option value="Raining">Raining</option>
+            <option value="Snow">Snow</option>
+            <option value="Icey">Icey</option>
+            <option value="Fog">Fog</option>
           </select>
         </td>
       </tr>
@@ -212,9 +214,11 @@
         <td>
           <select id="roadCondition">
             <option></option>
-            <option value="road">Road</option>
-            <option value="mainRoad">Main Road</option>
-            <option value="dirtRoad">dirtRoad</option>
+            <option value="Sealed">Sealed</option>
+            <option value="Unsealed">Unsealed</option>
+            <option value="Quiet Street">Quiet Street</option>
+            <option value="Main Road">Main Road</option>
+            <option value="Multi Lanes">Multi Lanes</option>
           </select>
         </td>
       </tr>
@@ -226,9 +230,9 @@
         <td>
           <select id="traffic">
             <option></option>
-            <option value="low ">Low</option>
-            <option value="medium ">Medium</option>
-            <option value="high ">High</option>
+            <option value="Light">Light</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
           </select>
         </td>
       </tr>
@@ -337,9 +341,11 @@
         <td>
           <select id="weatherQuery">
             <option></option>
-            <option value="clear">Clear</option>
-            <option value="rainy">Rainy</option>
-            <option value="thunder">Thunder</option>
+            <option value="Fine">Clear</option>
+            <option value="Raining">Raining</option>
+            <option value="Snow">Snow</option>
+            <option value="Icey">Icey</option>
+            <option value="Fog">Fog</option>
           </select>
         </td>
       </tr>
@@ -351,9 +357,11 @@
         <td>
           <select id="roadConditionQuery">
             <option></option>
-            <option value="road">Road</option>
-            <option value="mainRoad">Main Road</option>
-            <option value="dirtRoad">dirtRoad</option>
+            <option value="Sealed">Sealed</option>
+            <option value="Unsealed">Unsealed</option>
+            <option value="Quiet Street">Quiet Street</option>
+            <option value="Main Road">Main Road</option>
+            <option value="Multi Lanes">Multi Lanes</option>
           </select>
         </td>
       </tr>
@@ -365,9 +373,9 @@
         <td>
           <select id="trafficQuery">
             <option></option>
-            <option value="low ">Low</option>
-            <option value="medium ">Medium</option>
-            <option value="high ">High</option>
+            <option value="Light">Light</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
           </select>
         </td>
       </tr>

@@ -31,27 +31,25 @@ let instNameRef = database.ref('/instructorsName');
 
 let newLog; //A variable which will later be used as an object for temporary data stroage before movement to an array
 
-let totalHoursDriven = 0; //A variabel which holds the totale hours driven
+let totalHoursDriven = 0; //A variable which holds the totale hours driven
 let progressionPercentage = 0;//Calculating the percentage
 
 
-// logRef.once('value').then((data) => { logbookArray = data.val(); });
-// instIDRef.once('value').then((data) => { instructorIdArray = data.val(); });
-// instNameRef.once('value').then((data) => { instructorNameArray = data.val(); });
+logRef.once('value').then(reload); //Getting data from onlne firebase databse and once information is recieved calls a function
+instIDRef.once('value').then(loopThroughInstructors);//Getting data from onlne firebase databse and once information is recieved calls a function
 
 
-logRef.once('value').then(reload);
-instIDRef.once('value').then(loopThroughInstructors);
-
-
-
-
+/** This function is used for once the data is recieved from the online database, it then loops through the arrays and 
+ * adds all the data into the table
+ * Parameters:
+ *  data(array) - the data that is being recived
+ * Return - None */
 function reload(data) {
-  if (logbookArray == null) logbookArray = [];
-  logbookArray = data.val();
+  if (logbookArray == null) logbookArray = []; //If there is no data in the online databse, it creates an array
+  logbookArray = data.val();//Adding the incoming data into a object
 
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
-  var testRow = document.getElementById('tbody').insertRow(0);
+  var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
   testRow.classList.add("w3-light-grey");
 
   for (i = 0; i < logbookArray.length; i++) { //Looping throught the array
@@ -73,7 +71,7 @@ function reload(data) {
     deleteCell = row.insertCell(12);
 
     fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-    calculateStats();
+    calculateStats();//Function to calculate statistics
   }
 
 }
@@ -93,7 +91,7 @@ goToPage(mainPage);//Calls code to change page at beginning of program
   */
 function pageFromInstructorPage(pageWanted) {
 
-  pageFromInstructor = pageWanted;
+  pageFromInstructor = pageWanted;//Setting the variable
 
 
 }
@@ -116,78 +114,85 @@ function goToPage(pageNumber) {
 }
 
 
-/** This function */
+/** This function adds a new instructor to the array, whenever the user adds a new instructor
+ * Parameters: none
+ * Return-None
+ */
 function addNewInstructor() { //Adds the inputted instructors into an array for later user.
 
-  // if (instructorNameArray == null) instructorNameArray = [];
-  if (instructorIdArray == null) instructorIdArray = [];
 
+  if (instructorIdArray == null) instructorIdArray = []; //Testing to see if the online dtabase is empty and if so just create an empty array
 
-  // instructorNameArray.push(document.getElementById("instructorName").value); //pushing the inputs into the arrays
-  instructorIdArray.push(document.getElementById('instructorId').value);
+  instructorIdArray.push(document.getElementById('instructorId').value);//pushing the inputs into the arrays
 
   document.getElementById('instructors');
 
-  var opt = instructorIdArray[instructorIdArray.length - 1];
-  var el = document.createElement("option");
-  el.textContent = opt;
-  el.value = opt;
-  document.getElementById('instructors').appendChild(el);
+  var opt = instructorIdArray[instructorIdArray.length - 1]; //Creating an option based off of the latest option in the instructor array
+  var el = document.createElement("option");//Creating an optio element
+  el.textContent = opt;//Making that element have the data from the option
+  el.value = opt;//Making the value have the data from the option
+  document.getElementById('instructors').appendChild(el); //Adding the element to the select input
 
-  var optQuery = instructorIdArray[instructorIdArray.length - 1];
-  var elQuery = document.createElement("option");
-  elQuery.textContent = opt;
-  elQuery.value = opt;
-  document.getElementById('instructorsQuery').appendChild(elQuery);
+  var optQuery = instructorIdArray[instructorIdArray.length - 1]; //Creating an option based off of the latest option in the instructor array
+  var elQuery = document.createElement("option");//Creating an optio element
+  elQuery.textContent = opt;//Making that element have the data from the option
+  elQuery.value = opt;//Making the value have the data from the option
+  document.getElementById('instructorsQuery').appendChild(elQuery); //Adding the element to the select input
 
+  goToPage(pageFromInstructor); //Going back to he prevoius page
+  instIDRef.update(instructorIdArray);//Updating the online databse
 
-  //document.getElementById('instructorsQuery').appendChild(el);
-
-  goToPage(pageFromInstructor);
-  instIDRef.update(instructorIdArray);
-  // instNameRef.update(instructorNameArray);
-  document.getElementById("instructorId").value = "";
+  document.getElementById("instructorId").value = ""; //Clearing the input field
 
 }
 
 
+/** This function is called once the data is recieved from an online database and is called to input the recieved data 
+ * into the selct input bar
+ * 
+ * Parameters: 
+ * data(array) - the data that is being recieved
+ * 
+ * Return: none
+ */
+
 function loopThroughInstructors(data) {
 
-  instructorIdArray = data.val();
+  instructorIdArray = data.val(); //Setting the data to a variable
   document.getElementById('instructors').innerHTML = "";
 
+  for (var i = 0; i < instructorIdArray.length; i++) { //Looping through the array with the set data
 
-  for (var i = 0; i < instructorIdArray.length; i++) {
-    console.log(instructorIdArray[i])
-
-    var opt = instructorIdArray[i];
+    var opt = instructorIdArray[i]; //Setting an option with the value of the array
     var optQuery = instructorIdArray[i];
 
-    var el = document.createElement("option");
+    var el = document.createElement("option"); //Creating an option for the select bar
     var elQuery = document.createElement("option");
 
-    el.textContent = opt;
+    el.textContent = opt; //Setting the element with the option text
     elQuery.textContent = optQuery;
 
     el.value = opt;
     elQuery.value = optQuery;
 
-    document.getElementById('instructors').appendChild(el);
+    document.getElementById('instructors').appendChild(el); //Adding the element to the select option
     document.getElementById('instructorsQuery').appendChild(elQuery);
-
 
   }
 
-
 }
+
+/** Function used to check is all the inputted data is formatted correctly and is valid
+ * 
+ * Parmaters: None
+ * Return: None
+*/
 
 function checkCorrectPage() { //Checking if all formatting is corrct and correct data
 
-  console.log(document.getElementById('TimeFinish').value - document.getElementById('TimeStart').value);
-
   if (document.getElementById('Date').value === "") { //Checking if fields are empty
 
-    alert("Please enter date");
+    alert("Please enter date"); //If it is empty then state this alert
   }
   else if (document.getElementById('OdometerStart').value === "") {
 
@@ -210,46 +215,48 @@ function checkCorrectPage() { //Checking if all formatting is corrct and correct
 
   }
   else if (document.getElementById('traffic').value === "") {
-    console.log("Test6");
+
     alert("Please enter traffic conditions");
   }
   else if (document.getElementById('TimeStart').value === "") {
-    console.log("Test7");
+
     alert("Please enter starting time");
   }
   else if (document.getElementById('TimeFinish').value === "") {
-    console.log("Test8");
+
     alert("Please enter finishing time");
   }
   else if (document.getElementById('instructors').value === "") {
-    console.log("Test9");
+
     alert("Please enter instructor ID");
 
   }
   else if (document.getElementById('LicenseNumber').value === "") {
-    console.log("Test9");
+
     alert("Please enter license number");
 
   }
   else if (document.getElementById('HoursDay').value != "" || document.getElementById('HoursDay').value != "") {
-    console.log("Test10");
-    addNewRow(); //After checking is correct, a new row is added
 
+    addNewRow(); //After checking is correct, a new row is added
 
   }
 
   else {
     alert("Please enter hours driven");
 
-
   }
 }
 
+/**Function used to delete a row and remove it from the array
+ * Paramerters:
+ * rowNumber(number) - the row that is being deleted
+ */
 function deleteRow(rowNumber) { //Deleteing element from an array and updating the table
 
-  if (confirm('Are you sure you want to remove from database')) {
+  if (confirm('Are you sure you want to remove from database')) { //A popup stating if the user really wants to delete the row
     logbookArray.splice(rowNumber, 1); //Taking out of array
-    logRef.set(logbookArray);
+    logRef.set(logbookArray);//Updating online database
 
 
 
@@ -257,7 +264,7 @@ function deleteRow(rowNumber) { //Deleteing element from an array and updating t
 
     var queryNewRow = document.getElementById('tbody').insertRow(0);
     queryNewRow.classList.add("w3-light-grey");
-
+    calculateStats();
     for (i = 0; i < logbookArray.length; i++) { //Looping throught the array
 
       var LogTable = document.getElementById("logbook"); //Accesing logbooks
@@ -285,7 +292,14 @@ function deleteRow(rowNumber) { //Deleteing element from an array and updating t
 
 }
 
-function fillCells(currentRow) { //Function to fill in respectvie cells
+/**Function called multiple times to fill in all the cells of the logbook
+ * Paramaters:
+ * currentRow(number) - the current row that is being filled in
+ * 
+ * Return: none
+ */
+
+function fillCells(currentRow) {
 
   dateCell.innerHTML = logbookArray[currentRow].date; //Accesing the cell and filling in the cell with values from the array and the objects
   odomStartCell.innerHTML = logbookArray[currentRow].odomArrayStart;
@@ -299,13 +313,15 @@ function fillCells(currentRow) { //Function to fill in respectvie cells
   licenseNumCell.innerHTML = logbookArray[currentRow].license;
   hoursDrivenDayCell.innerHTML = logbookArray[currentRow].hoursDrivenArray;
   hoursDrivenNightCell.innerHTML = logbookArray[currentRow].hoursDrivenNightArray;
-  // deleteCell.innerHTML = "<button class='w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'>Remove</button>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
 
-  deleteCell.innerHTML = "<i class='fas fa-trash-alt w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'></i>"
+  deleteCell.innerHTML = "<i class='fas fa-trash-alt w3-button w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'></i>" //Adding in a button which calls the function to delete a row and takes a parameter of the appropiate row
 
 }
 
-
+/**Function called to search for particular values of the array 
+ * Parameters: None
+ * Return: None
+*/
 function querySearch() {//Function to search the query for respective data
 
   document.getElementById('tbody').innerHTML = '';//clears the logbook table
@@ -335,7 +351,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].date === document.getElementById("DateQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -345,7 +361,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].odomArrayStart === document.getElementById("OdometerStartQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -355,7 +371,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].odomArrayFinish === document.getElementById("OdometerFinishQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -365,7 +381,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].startTimeArray === document.getElementById("TimeStartQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -375,7 +391,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].finsishTimeArray === document.getElementById("TimeFinishQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -384,8 +400,8 @@ function querySearch() {//Function to search the query for respective data
 
 
       if (logbookArray[i].instructorArrayValue === document.getElementById("instructorsQuery").value) {//Checking if the current row is equal to the inputed query search
-        console.log("It is");
-        fillCells(i);
+
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -395,7 +411,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].license === document.getElementById("LicenseNumberQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -405,7 +421,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].hoursDrivenArray === document.getElementById("HoursDayQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -415,7 +431,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].hoursDrivenNightArray === document.getElementById("HoursNightQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -425,7 +441,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].weather === document.getElementById("weatherQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -435,7 +451,7 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].road === document.getElementById("roadConditionQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
@@ -445,13 +461,13 @@ function querySearch() {//Function to search the query for respective data
 
       if (logbookArray[i].traffic === document.getElementById("trafficQuery").value) {//Checking if the current row is equal to the inputed query search
 
-        fillCells(i);
+        fillCells(i);//If true the cells are then filled for that row
 
       }
 
     }
     else {
-      fillCells(i);
+      fillCells(i);//If true the cells are then filled for that row
 
 
     }
@@ -476,13 +492,16 @@ function querySearch() {//Function to search the query for respective data
 }
 
 
-
+/**Function used to add a new field into the logbook
+ * Paramerters;None
+ * Return:None
+ */
 function addNewRow() { //Adding in a new row
   document.getElementById('tbody').innerHTML = ''; //Clearing table
 
   var queryNewRow = document.getElementById('tbody').insertRow(0);
   queryNewRow.classList.add("w3-light-grey");
-  if (logbookArray == null) logbookArray = [];
+  if (logbookArray == null) logbookArray = []; //Checking if the array is empty and if so create an array
 
   newLog = {//Adding in the inputted data into an object
     date: document.getElementById('Date').value,
@@ -500,19 +519,15 @@ function addNewRow() { //Adding in a new row
     i: logbookArray.length
   }
 
-
-
   logbookArray.push(newLog);//Adding the object into an array
 
-  logRef.update(logbookArray);
-  console.log(logbookArray[logbookArray.length - 1]);
-  console.log(logbookArray);
+  logRef.update(logbookArray); //Updating the online database
 
   for (i = 0; i < logbookArray.length; i++) {//Looping through all values in array
 
-    var LogTable = document.getElementById("logbook");
-    var row = LogTable.insertRow(LogTable.rows.length);
-    dateCell = row.insertCell(0);
+    var LogTable = document.getElementById("logbook"); //Referencing the logbook table
+    var row = LogTable.insertRow(LogTable.rows.length);//Creating a row in that logbook table
+    dateCell = row.insertCell(0); //Inserting cells into the row of that table
     odomStartCell = row.insertCell(1);
     odomFinCell = row.insertCell(2);
     weatherCondCell = row.insertCell(3);
@@ -533,7 +548,7 @@ function addNewRow() { //Adding in a new row
   }
 
 
-  calculateStats();
+  calculateStats();//Calculates the different statistics such as percentage
 
   document.getElementById('Date').value = ""; //clearing the data in the input form for later use
   document.getElementById('OdometerStart').value = "";
@@ -551,17 +566,20 @@ function addNewRow() { //Adding in a new row
 
 }
 
+/**Function used to calculate the statistics
+ * Parameters:None
+ * Return:None
+ */
 function calculateStats() {
 
-  totalHoursDriven = 0;
+  totalHoursDriven = 0; //Reseting the totalhours driven
 
-  for (a = 0; a < logbookArray.length; a++) {
+  for (a = 0; a < logbookArray.length; a++) { //Looping through the logbook array and adding the respective data from every row
 
-    totalHoursDriven = Number(logbookArray[a].hoursDrivenArray) + Number(logbookArray[a].hoursDrivenNightArray) + totalHoursDriven;
-
+    totalHoursDriven = Number(logbookArray[a].hoursDrivenArray) + Number(logbookArray[a].hoursDrivenNightArray) + totalHoursDriven; //Adding the data for total hours driven
 
   }
-  progressionPercentage = (totalHoursDriven / 120) * 100;
+  progressionPercentage = (totalHoursDriven / 120) * 100; //Calculatting the percentage driven of the total hours
   document.getElementById('progression').style.width = progressionPercentage + "%";
   document.getElementById('progression').innerHTML = Math.round(progressionPercentage) + "%";
   document.getElementById('currentHours').innerHTML = totalHoursDriven;
