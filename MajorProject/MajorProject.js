@@ -579,6 +579,7 @@ function calculateStats() {
     totalHoursDriven = Number(logbookArray[a].hoursDrivenArray) + Number(logbookArray[a].hoursDrivenNightArray) + totalHoursDriven; //Adding the data for total hours driven
 
   }
+  //test
   progressionPercentage = (totalHoursDriven / 120) * 100; //Calculatting the percentage driven of the total hours
   document.getElementById('progression').style.width = progressionPercentage + "%";
   document.getElementById('progression').innerHTML = Math.round(progressionPercentage) + "%";
