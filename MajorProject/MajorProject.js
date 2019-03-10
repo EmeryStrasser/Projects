@@ -11,7 +11,7 @@ let instructorIdCell;
 let licenseNumCell;
 let hoursDrivenDayCell;
 let hoursDrivenNightCell;
-
+//test
 //Individual cell for a delete button for formatting sake.
 let deleteCell;
 
