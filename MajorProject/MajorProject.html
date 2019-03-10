@@ -1,7 +1,7 @@
 <html>
 
 <head>
-
+  <!-- References to various different style sheets in use -->
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="MajorProject.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
@@ -11,60 +11,70 @@
 </head>
 
 <body class="w3-dark-grey">
+  <!-- The background of the project -->
   <br>
   <div class="w3-light-grey w3-round">
     <div id="progression" class="w3-container w3-round w3-Blue-Gray" style="width:0%">0%</div>
+    <!-- Progression bar -->
   </div>
   <h1 class="w3-grey">
     Learner Driver LogBook
+    <!--Main heading   -->
     <span id="progressBar">
       <span id="currentHours">0</span>/120
+      <!-- The total number of hours the user has driven -->
     </span>
 
   </h1>
 
 
 
-
+  <!-- The opening page of the project -->
   <div class="pages w3-center" id="mainPage">
 
 
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(logbookPage)">Logbook Page</button>
+    <!--Button to call new page  -->
     <br>
     <br>
-    <!-- <button class="w3-button w3-round-xlarge w3-light-grey">Statistics</button>
-    <br>
-    <br> -->
+    <!-- Button to go to the page where you add new instructors -->
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage), pageFromInstructorPage(mainPage)">Update Instructors</button>
 
 
 
   </div>
-
+  <!-- Page where you enetr new instructors -->
   <div class="pages w3-center" id="instructorPage">
 
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(pageFromInstructor)">Cancel</button>
+    <!-- Button to go back to main page -->
     <input type="text" id="instructorId" placeholder="ID">
-    <!-- <input type="text" id="instructorName" placeholder="Name"> -->
+    <!--  Input field for the user t oinput instructor-->
     <br>
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="addNewInstructor()">Save</button>
+    <!-- Saving the instructor -->
   </div>
 
 
-
+  <!-- The page with the actual logbook-->
 
   <div class="pages w3-center" id="logbookPage">
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="querySearch(), goToPage(mainPage)">Back</button>
+    <!-- Button to go back to main page -->
     <button onclick='goToPage(inputPage)' class="w3-button w3-round-xlarge w3-light-grey">New Log</button>
+    <!--Button to add a log to the logbook  -->
 
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(queryPage)">Query</button>
+    <!--Button to search for particular data  -->
 
     <br>
     <br>
     <div class="w3-responsive">
       <table class="w3-border w3-striped w3-card-4 w3-centered logTable" id="logbook">
+        <!-- The logbook -->
         <thead>
           <tr class="w3-grey Header">
+            <!--The header of the table  -->
             <th>Date</th>
             <th>Odometer Start</th>
             <th>Odometer Finish</th>
@@ -83,6 +93,7 @@
 
         <tbody id="tbody">
           <tr class="w3-light-grey">
+            <!-- where the logs will appear in the table -->
 
           </tr>
         </tbody>
@@ -98,24 +109,31 @@
 
   </div>
 
+  <!-- Page where you input data -->
   <div class="pages w3-center" id="inputPage">
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(logbookPage)">Cancel</button>
+    <!-- Button to go back -->
     <table class="inputTable">
+      <!--Table to help the formatting of the various inout fields and descriptions  -->
 
       <tr>
         <td>
           <label>Date:</label>
+          <!--  Labels for each input field-->
         </td>
         <td>
           <input type="date" id="Date" placeholder="01/01/2018">
+          <!--  The various input fields-->
       </tr>
 
       <tr>
         <td>
           <label>Odometer Start:</label>
+          <!--  Labels for each input field-->
         </td>
         <td>
           <input type="number" id="OdometerStart" min="0 " max="999999" placeholder="10022">
+          <!--  The various input fields-->
         </td>
       </tr>
 
@@ -152,7 +170,7 @@
         </td>
         <td>
           <select id="instructors">
-
+            <!-- The inputted instructors will appear in the select box -->
             <option></option>
 
 
@@ -160,7 +178,7 @@
 
 
           <button class="w3-button w3-round-xlarge w3-light-grey" onclick="goToPage(instructorPage), pageFromInstructorPage(inputPage)">Add Instructor</button>
-
+          <!--  If there are no instructors, users can call a new page to input a instructor-->
         </td>
       </tr>
 
@@ -241,9 +259,12 @@
     <br>
     <br>
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick='checkCorrectPage()'>Save</button>
+    <!--Button to call to check if all the data is valid  -->
 
   </div>
 
+
+  <!--The query page to search for new day  -->
   <div class="pages w3-center" id=queryPage>
     <table class="inputTable">
 
@@ -251,9 +272,11 @@
       <tr>
         <td>
           <label>Date:</label>
+          <!--THe labels for the inout fields  -->
         </td>
         <td>
           <input type="date" id="DateQuery" placeholder="01/01/2018">
+          <!--The input fields  -->
       </tr>
 
       <tr>
@@ -384,13 +407,15 @@
     <br>
     <br>
     <button class="w3-button w3-round-xlarge w3-light-grey" onclick='querySearch()'>Save</button>
+    <!-- Button to search for the corresponding data -->
 
 
   </div>
 
 
   <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
-  <script>
+  <!-- References to required code for the online dataabase to work -->
+  <script> 
     // Initialize Firebase
     var config = {
       apiKey: "AIzaSyBbCgzY2X2zBZlzdX3WHquv0RAjiRHmtgU",
@@ -403,7 +428,9 @@
     firebase.initializeApp(config);
   </script>
 
+
   <script src="MajorProject.js "></script>
+  <!-- Reference to my jaavascript -->
 
 </body>
 
