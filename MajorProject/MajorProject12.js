@@ -4,9 +4,11 @@
  Return: 
    Returns null */
 
+goToPage(mainPage);//Calls code to change page at beginning of program
+
 function goToPage(pageNumber) {
 
-    document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages with a class of pages
-    pageNumber.hidden = false;//shows page needed
+  document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages with a class of pages
+  pageNumber.hidden = false;//shows page needed
 
 }

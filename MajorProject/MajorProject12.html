@@ -14,14 +14,21 @@
 
 
     <!-- The opening page of the project -->
-    <div class="w3-center" id="mainPage">
+    <div class="pages w3-center" id="mainPage">
 
 
         <br>
         <p id="heading" class="w3-text-white w3-center w3-wide ">QUIZWORLD</p>
 
-        <button class="w3-btn w3-xxLarge w3-round-xLarge w3-Teal">LOGIN</button>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <button class="w3-btn w3-xxLarge w3-round-xLarge w3-Teal" onclick="goToPage(loginPage)">LOGIN</button>
         <!--Button to call new page  -->
+        <br>
+        <br>
         <br>
         <br>
         <br>
@@ -30,6 +37,46 @@
         <button class="w3-btn w3-xxLarge w3-round-xLarge w3-Teal">NEW MEMBER</button>
 
 
+
+    </div>
+
+    <!-- Log in page -->
+    <div class="pages w3-center" id="loginPage">
+
+
+        <br>
+
+        <p id="smallHeading" class="w3-text-white w3-wide ">
+
+            Welcome back</p>
+        <br>
+        <p id="smallHeading" class="w3-text-white w3-center w3-wide ">please login</p>
+
+
+
+        <!-- Button to go back to main page -->
+        <br>
+
+
+
+        <input class="w3-center w3-round-large" type="text" style="width:30%; height:60px;" placeholder="Username">
+
+
+        <br>
+
+        <br>
+        <input class="w3-center w3-round-large" type="password" style="width:30%; height:60px;" placeholder="Password">
+
+        <br>
+        <br>
+
+        <br>
+        <br>
+        <button class="w3-btn w3-xxLarge w3-round-xLarge w3-Teal" onclick="goToPage(mainPage)" style="width:30%;">Login</button>
+
+        <br>
+        <br>
+        <button class="w3-btn w3-xxLarge w3-round-xLarge w3-Teal" onclick="goToPage(mainPage)" style="width:30%;">Cancel</button>
 
     </div>
 
