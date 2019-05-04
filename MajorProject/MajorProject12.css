@@ -1,7 +1,24 @@
 body{
+    
+    
     font-family:"Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-
 }
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(45deg,#41f453,#48f1f4,#41f453,#48f1f4,#41f453,#48f1f4);
+    background-size: 600% 100%;
+    animation: gradient 16s linear infinite;
+    animation-direction: alternate;
+}
+@keyframes gradient {
+    0% {background-position: 0%}
+    100% {background-position: 100%}
+}
+
+
 
 #heading{
 
@@ -19,3 +36,14 @@ margin-bottom: 0px;
     
 }
 
+.input{
+
+border: black;
+
+}
+
+.submit{
+
+    background-color: Transparent;
+
+}
