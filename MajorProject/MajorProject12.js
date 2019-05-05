@@ -1,3 +1,23 @@
+
+let usernamePasswordArray = [];
+
+let database = firebase.database();
+
+let UsernamePasswordRef = database.ref('/UsernamePassword');
+
+
+UsernamePasswordRef.once('value').then(reload);
+
+
+function reload(data) {
+  if (usernamePasswordArray == null) usernamePasswordArray = []; //If there is no data in the online databse, it creates an array
+  usernamePasswordArray = data.val();//Adding the incoming data into a object
+
+}
+
+
+
+
 /** This function is used to hide all the different pages and then shows a single page based on the parameter
  Parameters: 
    pagenumber(string) - Allows the choice of choosing what page to show
@@ -12,3 +32,6 @@ function goToPage(pageNumber) {
   pageNumber.hidden = false;//shows page needed
 
 }
+
+
+
