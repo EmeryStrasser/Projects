@@ -16,7 +16,7 @@ function reload(data) {
   usernamePasswordArray = data.val();//Adding the incoming data into a object
   console.log(usernamePasswordArray);
 
-  usernamePasswordArray.push(["Emery", "strasser"]);
+
   UsernamePasswordRef.update(usernamePasswordArray);
 
 }
@@ -39,6 +39,7 @@ function Login() {
 
         console.log("passwordFound")
 
+        goToPage(quizPage);
         return;
       }
 
@@ -46,13 +47,42 @@ function Login() {
 
   }
 
-  console.log("no matches found")
+  alert("no matches found")
 }
 
 function NewMember() {
 
+  let UserCheck = document.getElementById("newUsername").value;
+
+  let passwordCheck = document.getElementById("newPassword").value;
+  console.log(UserCheck);
+  for (i = 0; i < usernamePasswordArray.length; i++) {
+
+    let temporaryArray = [];
+    temporaryArray = usernamePasswordArray[i];
+
+    if (UserCheck === temporaryArray[0]) {
+
+      alert("Username is already being used");
+
+      return;
+    }
+    else if (passwordCheck === temporaryArray[1]) {
+
+      alert("Password is already being used");
 
 
+      return;
+    }
+
+  }
+
+  console.log("can use this");
+
+  usernamePasswordArray.push([UserCheck, passwordCheck]);
+  UsernamePasswordRef.update(usernamePasswordArray);
+
+  goToPage(quizPage);
 
 }
 
@@ -72,6 +102,12 @@ function goToPage(pageNumber) {
 
   document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages with a class of pages
   pageNumber.hidden = false;//shows page needed
+
+  document.getElementById("newUsername").value = "";
+  document.getElementById("newPassword").value = "";
+  document.getElementById("loginUsername").value = "";
+  document.getElementById("loginPassword").value = "";
+
 
 }
 
