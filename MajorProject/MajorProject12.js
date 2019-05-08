@@ -96,7 +96,7 @@ function NewMember() {
  Return: 
    Returns null */
 
-goToPage(mainPage);//Calls code to change page at beginning of program
+goToPage(questionCreation);//Calls code to change page at beginning of program
 
 function goToPage(pageNumber) {
 
