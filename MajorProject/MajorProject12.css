@@ -150,3 +150,9 @@ tr td:nth-child(1){
   text-align:center
 
 }
+
+input[type=checkbox] {
+  transform: scale(2);
+  margin-right:9%;
+  margin-left:9%;
+}

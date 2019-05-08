@@ -28,14 +28,14 @@ function Login() {
 
   let passwordCheck = document.getElementById("loginPassword").value;
   for (i = 0; i < usernamePasswordArray.length; i++) {
-    let temporaryArray = [];
-    temporaryArray = usernamePasswordArray[i];
+    // let temporaryArray = [];
+    // temporaryArray = usernamePasswordArray[i];
 
-    if (UserCheck === temporaryArray[0]) {
+    if (UserCheck === usernamePasswordArray[i][0]) {
 
       console.log("FoundUsername");
 
-      if (passwordCheck === temporaryArray[1]) {
+      if (passwordCheck === usernamePasswordArray[i][1]) {
 
         console.log("passwordFound")
 
@@ -58,16 +58,16 @@ function NewMember() {
   console.log(UserCheck);
   for (i = 0; i < usernamePasswordArray.length; i++) {
 
-    let temporaryArray = [];
-    temporaryArray = usernamePasswordArray[i];
+    // let temporaryArray = [];
+    // temporaryArray = usernamePasswordArray[i];
 
-    if (UserCheck === temporaryArray[0]) {
+    if (UserCheck === usernamePasswordArray[i][0]) {
 
       alert("Username is already being used");
 
       return;
     }
-    else if (passwordCheck === temporaryArray[1]) {
+    else if (passwordCheck === usernamePasswordArray[i][1]) {
 
       alert("Password is already being used");
 
