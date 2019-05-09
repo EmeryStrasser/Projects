@@ -117,7 +117,7 @@
 
     <div class="pages w3-center" id="quizPage">
         <br>
-        <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="goToPage()" style="width:30%;">LOGOUT</button>
+        <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="goToPage(mainPage)" style="width:30%;">LOGOUT</button>
         <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="goToPage(createQuizPage)" style="width:30%;">CREATE QUIZ</button>
         <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="goToPage()" style="width:30%;">MY QUIZZES</button>
         <div class="table-box">
@@ -167,13 +167,13 @@
 
             <br>
             <br>
-            <input class="w3-center w3-round-large input" id="quizDescription" type="number" style="width:30%; height:8%; font-size:18;"
-                placeholder="TIME LIMIT">
+            <input class="w3-center w3-round-large input" id="timeLimit" type="number" style="width:30%; height:8%; font-size:18;" placeholder="TIME LIMIT">
         </div>
         <br>
         <br>
 
-        <button class="w3-btn w3-xxLarge w3-round-xLarge submit w3-text-white" onclick="NewMember()" style="width:30%;">CREATE QUIZ</button>
+        <button class="w3-btn w3-xxLarge w3-round-xLarge submit w3-text-white" onclick=" quizCreation(); goToPage(questionCreationPage); "
+            style="width:30%;">CREATE QUIZ</button>
 
         <br>
         <br>
@@ -183,8 +183,7 @@
     </div>
 
 
-    <div class="pages w3-center" id="questionCreation">
-
+    <div class="pages w3-center" id="questionCreationPage">
         <br>
 
         <p id="smallHeading" class="w3-text-white w3-wide ">Question
@@ -197,7 +196,7 @@
 
 
         <div style="margin-right:10%; margin-left:10%;">
-            <input class="w3-center w3-round-large w3-animate-input input" id="quizName" type="text" style="width:80%; height:8%; font-size:18;"
+            <input class="w3-center w3-round-large w3-animate-input input" id="quizQuestion" type="text" style="width:80%; height:8%; font-size:18;"
                 placeholder="The Question">
             <br>
             <br>
@@ -205,14 +204,10 @@
 
             <br>
             <br>
-            <input class="w3-center w3-round-large input" id="quizDescription" type="text" style="width:20%; height:8%; font-size:18;"
-                placeholder="Answer 1">
-            <input class="w3-center w3-round-large input" id="quizDescription" type="text" style="width:20%; height:8%; font-size:18;"
-                placeholder="Answer 2">
-            <input class="w3-center w3-round-large input" id="quizDescription" type="text" style="width:20%; height:8%; font-size:18;"
-                placeholder="Answer 3">
-            <input class="w3-center w3-round-large input" id="quizDescription" type="text" style="width:20%; height:8%; font-size:18;"
-                placeholder="Answer 4">
+            <input class="w3-center w3-round-large input" id="answer1" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Answer 1">
+            <input class="w3-center w3-round-large input" id="answer2" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Answer 2">
+            <input class="w3-center w3-round-large input" id="answer3" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Answer 3">
+            <input class="w3-center w3-round-large input" id="answer4" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Answer 4">
 
             <br>
             <br>
@@ -227,13 +222,12 @@
         <br>
         <br>
 
-        <button class="w3-btn w3-Large w3-round-xLarge submit w3-text-white" onclick="NewMember()" style="width:10%;">
+        <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="" style="width:05%;">
             <</button>
 
-                <button class="w3-btn w3-Large w3-round-xLarge submit w3-text-white" onclick="NewMember()" style="width:30%;">FINISH</button>
+                <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="finishQuizCreation()" style="width:20%;">FINISH</button>
                 <!-- Button to go back to main page -->
-                <button class="w3-btn w3-Large w3-round-xLarge submit w3-text-white" onclick="NewMember()" style="width:10%;">
-                    ></button>
+                <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="questionCreation()" style="width:05%;">></button>
 
     </div>
 
@@ -258,7 +252,6 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
     </script>
-
 
 
     <script src="MajorProject12.js "></script>
