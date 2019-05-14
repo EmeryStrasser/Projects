@@ -106,7 +106,7 @@ margin-right:15%;
 width:70%;
 Height:70%;
 overflow-y:scroll;
-
+background-color: White;
 box-shadow: 0 10px 100px rgba(0,0,0,0.5);
 }
 
@@ -117,7 +117,7 @@ width: 100%;
 }
 
 table, td{
-
+  
 border:1px solid black;
 border-collapse: collapse;
 text-align: center;
@@ -138,14 +138,14 @@ tr th:nth-child(1)
 
 width:60px;
 text-align: center;
-background: #03707d;
+/* background: #03707d; */
 
 
 }
 
 tr td:nth-child(1){
-
-  background: #00bcd4;
+border: none;
+  background: #03707d;
   color: #fff; 
   text-align:center
 
