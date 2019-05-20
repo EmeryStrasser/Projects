@@ -75,20 +75,20 @@ function reloadQuiz(data) {
 function Login() {
 
   let UserCheck = document.getElementById("loginUsername").value;
-
+  let noSpaces = rep(UserCheck);
   let passwordCheck = document.getElementById("loginPassword").value;
   for (i = 0; i < usernamePasswordArray.length; i++) {
     // let temporaryArray = [];
     // temporaryArray = usernamePasswordArray[i];
 
-    if (UserCheck === usernamePasswordArray[i][0]) {
+    if (noSpaces === usernamePasswordArray[i][0]) {
 
       console.log("FoundUsername");
 
       if (passwordCheck === usernamePasswordArray[i][1]) {
 
         console.log("passwordFound")
-        username = UserCheck;
+        username = noSpaces;
         goToPage(quizPage);
         return;
       }
@@ -103,6 +103,7 @@ function Login() {
 function NewMember() {
 
   let UserCheck = document.getElementById("newUsername").value;
+  let noSpaces = rep(UserCheck);
   let passwordCheck = document.getElementById("newPassword").value;
 
   for (i = 0; i < usernamePasswordArray.length; i++) {
@@ -110,30 +111,71 @@ function NewMember() {
     // let temporaryArray = [];
     // temporaryArray = usernamePasswordArray[i];
 
-    if (UserCheck === usernamePasswordArray[i][0]) {
+    if (noSpaces === usernamePasswordArray[i][0]) {
 
       alert("Username is already being used");
 
       return;
     }
-    else if (UserCheck.toString().includes(" ")) {
+    // else if (UserCheck.toString().includes(" ")) {
 
-      alert("Pleas remove spaces from username");
+    //   alert("Please remove spaces from username");
 
 
-      return;
-    }
+    //   return;
+    // }
 
   }
 
   console.log("can use this");
 
-  usernamePasswordArray.push([UserCheck, passwordCheck]);
+  usernamePasswordArray.push([noSpaces, passwordCheck]);
   UsernamePasswordRef.update(usernamePasswordArray);
 
   goToPage(quizPage);
 
 }
+
+
+
+function rep(str) {
+  for (i = 0; i < str.length; i++) {
+
+    if (str.charAt(i) === " ") {
+      str = setCharAt(str, i, '_');
+    }
+  }
+  return str;
+}
+
+function setCharAt(str, index, chr) {
+  if (index > str.length - 1) return str;
+  return str.substr(0, index) + chr + str.substr(index + 1);
+}
+
+// function removeSpaces(origString) {
+
+
+//   char[] chars = str.toCharArray();
+//   chars[1] = 'X';
+//   str = new String(chars);
+
+//   // alert("test");
+//   // // for (var i = 0; i < origString.length; i++) {
+
+//   // //   if (origString.charAt(i) === " ") {
+//   // //     alert(origString.charAt(i));
+//   // //     origString.charAt(i) = "_";
+//   // //     alert(origString.charAt(i));
+//   // //   }
+
+
+
+//   // //   // alert(origString.charAt(i));
+//   // }
+//   // return (origString);
+
+// }
 
 
 function quizCreation() {
