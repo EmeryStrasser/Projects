@@ -373,7 +373,7 @@ function nextQuestion(answerChoice) {
 
   if (currentQuestion === quizArray[lastQuizId][4].length) {
 
-    alert("Quiz Finished: Your score is " + score);
+    alert("Quiz Finished: Your score is " + score + "/" + currentQuestion);
 
     goToPage(quizPage);
 
