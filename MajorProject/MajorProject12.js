@@ -28,6 +28,8 @@ let authorCell;
 let currentQuestion;
 let lastQuizId;
 let questionCounter = 0;
+
+let score;
 // let quizArray = [[Quiz Name, Quiz Description, Time limit, [quiz ID, [Question, [Answer1, Correct/Wrong],[Answer2, Correct/Wrong],[Answer3, Correct/Wrong],[Answer4, Correct/Wrong]]]]]
 
 
@@ -337,7 +339,7 @@ function goToPage(pageNumber) {
 
 
 function playQuiz(quizId) {
-
+  score = 0;
   goToPage(questions);
   currentQuestion = 0;
   questionCounter = 1
@@ -353,9 +355,32 @@ function playQuiz(quizId) {
 
 }
 
-function nextQuestion() {
+function nextQuestion(answerChoice) {
+
+  if (quizArray[lastQuizId][4][currentQuestion][answerChoice][1] === true) {
+
+    score++;
+    alert("Correct");
+
+  }
+  else {
+    alert("Wrong");
+
+  }
+
 
   currentQuestion++;
+
+  if (currentQuestion === quizArray[lastQuizId][4].length) {
+
+    alert("Quiz Finished: Your score is " + score);
+
+    goToPage(quizPage);
+
+    return;
+
+  }
+
   questionCounter++;
   document.getElementById("quizQuestionNumber").innerHTML = questionCounter;
 
