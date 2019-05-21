@@ -25,6 +25,9 @@ let quizDescCell;
 let quizRatingCell;
 let authorCell;
 
+let currentQuestion;
+let lastQuizId;
+let questionCounter = 0;
 // let quizArray = [[Quiz Name, Quiz Description, Time limit, [quiz ID, [Question, [Answer1, Correct/Wrong],[Answer2, Correct/Wrong],[Answer3, Correct/Wrong],[Answer4, Correct/Wrong]]]]]
 
 
@@ -287,7 +290,7 @@ function finishQuizCreation() {
 
 function fillCells(currentRow) {
 
-  quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='deleteRow(" + currentRow + ")'></i>"
+  quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='playQuiz(" + currentRow + ")'></i>"
   //Accesing the cell and filling in the cell with values from the array and the objects
   console.log(quizArray[currentRow][0]);
   quiznameCell.innerHTML = quizArray[currentRow][0];
@@ -333,3 +336,34 @@ function goToPage(pageNumber) {
 
 
 
+function playQuiz(quizId) {
+
+  goToPage(questions);
+  currentQuestion = 0;
+  questionCounter = 1
+  document.getElementById("quizQuestionNumber").innerHTML = questionCounter;
+  lastQuizId = quizId;
+
+  document.getElementById("question").innerHTML = quizArray[quizId][4][currentQuestion][0];
+  document.getElementById("q1").innerHTML = quizArray[quizId][4][currentQuestion][1][0];
+  document.getElementById("q2").innerHTML = quizArray[quizId][4][currentQuestion][2][0];
+  document.getElementById("q3").innerHTML = quizArray[quizId][4][currentQuestion][3][0];
+  document.getElementById("q4").innerHTML = quizArray[quizId][4][currentQuestion][4][0];
+
+
+}
+
+function nextQuestion() {
+
+  currentQuestion++;
+  questionCounter++;
+  document.getElementById("quizQuestionNumber").innerHTML = questionCounter;
+
+  document.getElementById("question").innerHTML = quizArray[lastQuizId][4][currentQuestion][0];
+  document.getElementById("q1").innerHTML = quizArray[lastQuizId][4][currentQuestion][1][0];
+  document.getElementById("q2").innerHTML = quizArray[lastQuizId][4][currentQuestion][2][0];
+  document.getElementById("q3").innerHTML = quizArray[lastQuizId][4][currentQuestion][3][0];
+  document.getElementById("q4").innerHTML = quizArray[lastQuizId][4][currentQuestion][4][0];
+
+
+}
