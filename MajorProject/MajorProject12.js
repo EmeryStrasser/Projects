@@ -10,7 +10,7 @@ let quizRef = database.ref('/quizDB');
 
 let quizName;
 let quizDescription;
-let timeLimit;
+
 
 let questionArray = [];
 
@@ -52,9 +52,10 @@ function reloadQuiz(data) {
   if (quizArray == null) quizArray = [];
   quizArray = data.val();//Adding the incoming data into a object
   console.log(quizArray);
-
+  // quizArray.splice(0, 1);
+  console.log(quizArray);
   // quizArray = [["test", "test"]];
-  // quizRef.update(quizArray);
+  quizRef.update(quizArray);
   // quizArray = ["test"];
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
   var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
@@ -94,6 +95,7 @@ function Login() {
 
         console.log("passwordFound")
         username = noSpaces;
+
         goToPage(quizPage);
         return;
       }
@@ -122,6 +124,10 @@ function NewMember() {
 
       return;
     }
+
+    username = noSpaces;
+
+
     // else if (UserCheck.toString().includes(" ")) {
 
     //   alert("Please remove spaces from username");
@@ -158,30 +164,6 @@ function setCharAt(str, index, chr) {
   return str.substr(0, index) + chr + str.substr(index + 1);
 }
 
-// function removeSpaces(origString) {
-
-
-//   char[] chars = str.toCharArray();
-//   chars[1] = 'X';
-//   str = new String(chars);
-
-//   // alert("test");
-//   // // for (var i = 0; i < origString.length; i++) {
-
-//   // //   if (origString.charAt(i) === " ") {
-//   // //     alert(origString.charAt(i));
-//   // //     origString.charAt(i) = "_";
-//   // //     alert(origString.charAt(i));
-//   // //   }
-
-
-
-//   // //   // alert(origString.charAt(i));
-//   // }
-//   // return (origString);
-
-// }
-
 
 function quizCreation() {
   console.log("test");
@@ -189,8 +171,8 @@ function quizCreation() {
   console.log(quizName);
   quizDescription = document.getElementById("quizDescription").value;
   console.log(quizDescription);
-  timeLimit = document.getElementById("timeLimit").value;
-  console.log(timeLimit);
+
+
   questionNumber = 1;
   document.getElementById("questionNumber").innerHTML = questionNumber;
 
@@ -256,7 +238,7 @@ function finishQuizCreation() {
 
   console.log(quizArray);
   // quizArray.push("test");
-  quizArray.push([quizName, quizDescription, timeLimit, username, questionArray]);
+  quizArray.push([quizName, quizDescription, 0, username, questionArray, 0]);
 
   questionArray = [];
 
@@ -279,7 +261,7 @@ function finishQuizCreation() {
 
 
     fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-    // calculateStats();//Function to calculate statistics
+
   }
 
   goToPage(quizPage);
@@ -292,12 +274,16 @@ function finishQuizCreation() {
 
 function fillCells(currentRow) {
 
+
   quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='playQuiz(" + currentRow + ")'></i>"
   //Accesing the cell and filling in the cell with values from the array and the objects
+
+
+
   console.log(quizArray[currentRow][0]);
   quiznameCell.innerHTML = quizArray[currentRow][0];
   quizDescCell.innerHTML = quizArray[currentRow][1];
-  quizRatingCell.innerHTML = "";
+  quizRatingCell.innerHTML = quizArray[currentRow][2];
   authorCell.innerHTML = quizArray[currentRow][3];
 
 
@@ -330,7 +316,7 @@ function goToPage(pageNumber) {
   document.getElementById("loginPassword").value = "";
   document.getElementById("quizName").value = "";
   document.getElementById("quizDescription").value = "";
-  document.getElementById("timeLimit").value = "";
+
 
 
 
@@ -375,8 +361,9 @@ function nextQuestion(answerChoice) {
 
     alert("Quiz Finished: Your score is " + score + "/" + currentQuestion);
 
-    goToPage(quizPage);
-
+    goToPage(results);
+    document.getElementById("result").innerHTML = score;
+    document.getElementById("amountOfQuestions").innerHTML = quizArray[lastQuizId][4].length
     return;
 
   }
@@ -389,6 +376,52 @@ function nextQuestion(answerChoice) {
   document.getElementById("q2").innerHTML = quizArray[lastQuizId][4][currentQuestion][2][0];
   document.getElementById("q3").innerHTML = quizArray[lastQuizId][4][currentQuestion][3][0];
   document.getElementById("q4").innerHTML = quizArray[lastQuizId][4][currentQuestion][4][0];
+
+
+}
+
+function finishQuiz() {
+
+  let rate = document.getElementById("rate").value;
+  console.log(rate);
+  if (rate < 0 || rate > 10) {
+
+    alert("Please input a number between 0 and 10");
+    return;
+
+  }
+
+  let currentAmountOfRatings = quizArray[lastQuizId][5];
+
+  currentAmountOfRatings++;
+  console.log(currentAmountOfRatings);
+  quizArray[lastQuizId][5] = currentAmountOfRatings;
+
+  quizRef.update(quizArray);
+
+  let currentAverageRate = quizArray[lastQuizId][2];
+  console.log(currentAverageRate);
+  let additionOfRates = currentAverageRate * (currentAmountOfRatings - 1);
+  console.log(currentAmountOfRatings - 1);
+  console.log(additionOfRates);
+  let newAdditionOfRates = parseFloat(additionOfRates) + parseFloat(rate);
+  console.log(newAdditionOfRates);
+  let newAverageRate = (Math.round((newAdditionOfRates / currentAmountOfRatings) * 10)) / 10;
+
+
+
+  console.log(newAverageRate);
+  quizArray[lastQuizId][2] = newAverageRate;
+  quizRef.update(quizArray);
+
+  console.log(lastQuizId);
+  var x = document.getElementById("quizTable").rows[lastQuizId + 2].cells;
+  x[3].innerHTML = newAverageRate;
+
+  goToPage(quizPage);
+
+
+
 
 
 }
