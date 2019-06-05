@@ -52,7 +52,21 @@ function reloadQuiz(data) {
   if (quizArray == null) quizArray = [];
   quizArray = data.val();//Adding the incoming data into a object
   console.log(quizArray);
-  // quizArray.splice(0, 1);
+  // 
+
+
+  for (i = 0; i < quizArray.length; i++) {
+
+    if (quizArray[i] === null) {
+      console.log(quizArray[i]);
+      // quizArray.splice(i, 1);
+
+    }
+
+  }
+
+
+
   console.log(quizArray);
   // quizArray = [["test", "test"]];
   quizRef.update(quizArray);
@@ -60,6 +74,7 @@ function reloadQuiz(data) {
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
   var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
 
+  // Insertion();
 
   for (i = 0; i < quizArray.length; i++) { //Looping throught the array
 
@@ -248,6 +263,7 @@ function finishQuizCreation() {
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
   var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
 
+  // Insertion();
 
   for (i = 0; i < quizArray.length; i++) { //Looping throught the array
 
@@ -384,12 +400,21 @@ function finishQuiz() {
 
   let rate = document.getElementById("rate").value;
   console.log(rate);
+
+  if (document.getElementById("rate").value === "") {
+    alert("Please input a rating");
+    return;
+
+  }
+
   if (rate < 0 || rate > 10) {
 
     alert("Please input a number between 0 and 10");
     return;
 
   }
+
+
 
   let currentAmountOfRatings = quizArray[lastQuizId][5];
 
@@ -400,17 +425,17 @@ function finishQuiz() {
   quizRef.update(quizArray);
 
   let currentAverageRate = quizArray[lastQuizId][2];
-  console.log(currentAverageRate);
+
   let additionOfRates = currentAverageRate * (currentAmountOfRatings - 1);
-  console.log(currentAmountOfRatings - 1);
-  console.log(additionOfRates);
+
+
   let newAdditionOfRates = parseFloat(additionOfRates) + parseFloat(rate);
-  console.log(newAdditionOfRates);
+
   let newAverageRate = (Math.round((newAdditionOfRates / currentAmountOfRatings) * 10)) / 10;
 
 
 
-  console.log(newAverageRate);
+
   quizArray[lastQuizId][2] = newAverageRate;
   quizRef.update(quizArray);
 
@@ -421,7 +446,67 @@ function finishQuiz() {
   goToPage(quizPage);
 
 
+}
 
+
+function Insertion() {
+
+  let NumItems = quizArray.length - 1;
+  let currentItem = 1;
+
+  while (currentItem <= NumItems) {
+
+    let currentDataItem = quizArray[currentItem][2];
+
+    let comparison = 0;
+
+    let finish = false;
+    console.log("T1");
+    while (comparison < currentItem && finish === false) {
+      console.log("T2");
+      if (currentDataItem < quizArray[comparison][2]) {
+
+        let shuffleItem = currentItem;
+        console.log("T3");
+        while (shuffleItem > comparison) {
+
+
+          quizArray[shuffleItem] = quizArray[shuffleItem - 1];
+
+          shuffleItem--;
+          console.log("T4");
+        }
+
+        quizArray[comparison] = quizArray[currentDataItem];
+        finish = true;
+        console.log("T5");
+
+      }
+
+      comparison++;
+      console.log("T6");
+    }
+
+    currentItem++;
+    console.log("T7");
+
+  }
+
+  quizRef.update(quizArray);
+  // for (i = 0; i < quizArray.length; i++) { //Looping throught the array
+
+  //   var quizTable = document.getElementById("quizTable"); //Accesing logbooks
+  //   var row = quizTable.insertRow(quizTable.rows.length);//Inserting a new row
+  //   quizNumberCell = row.insertCell(0); //Inserting the different cells 
+  //   quiznameCell = row.insertCell(1);
+  //   quizDescCell = row.insertCell(2);
+  //   quizRatingCell = row.insertCell(3);
+  //   authorCell = row.insertCell(4);
+
+
+  //   fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
+  //   // calculateStats();//Function to calculate statistics
+  // }
 
 
 }
