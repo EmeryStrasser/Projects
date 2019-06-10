@@ -39,6 +39,11 @@ logRef.once('value').then(reload); //Getting data from onlne firebase databse an
 instIDRef.once('value').then(loopThroughInstructors);//Getting data from onlne firebase databse and once information is recieved calls a function
 
 
+
+
+
+
+
 /** This function is used for once the data is recieved from the online database, it then loops through the arrays and 
  * adds all the data into the table
  * Parameters:
