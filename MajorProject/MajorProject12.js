@@ -7,6 +7,7 @@ let database = firebase.database();
 let UsernamePasswordRef = database.ref('/UsernamePassword');
 let quizRef = database.ref('/quizDB');
 
+let defaultSort = "alphabetical";
 
 let quizName;
 let quizDescription;
@@ -30,26 +31,8 @@ let lastQuizId;
 let questionCounter = 0;
 
 let score;
-// let quizArray = [[Quiz Name, Quiz Description, Time limit, [quiz ID, [Question, [Answer1, Correct/Wrong],[Answer2, Correct/Wrong],[Answer3, Correct/Wrong],[Answer4, Correct/Wrong]]]]]
 
-
-// testFunc();
-
-// functione testFunc() {
-//   let st1 = "beta";
-//   let st2 = "bot";
-
-//   if (st1 < st2) {
-
-//     console.log(st1);
-
-//   }
-//   else {
-
-//     console.log(st2);
-
-//   }
-// }
+let isSearchingBool = false;
 
 UsernamePasswordRef.once('value').then(reload);
 quizRef.once('value').then(reloadQuiz);
@@ -60,9 +43,6 @@ function reload(data) {
   usernamePasswordArray = data.val();//Adding the incoming data into a object
   console.log(usernamePasswordArray);
 
-
-  // UsernamePasswordRef.update(usernamePasswordArray);
-
 }
 
 function reloadQuiz(data) {
@@ -70,8 +50,6 @@ function reloadQuiz(data) {
   if (quizArray == null) quizArray = [];
   quizArray = data.val();//Adding the incoming data into a object
   console.log("test");
-  // 
-
 
   for (i = 0; i < quizArray.length; i++) {
 
@@ -83,73 +61,57 @@ function reloadQuiz(data) {
 
   }
 
-
-
-  console.log(quizArray);
-  // quizArray = [["test", "test"]];
   quizRef.update(quizArray);
-  // quizArray = ["test"];
-  // document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
-  // var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
 
   InsertionRate();
 
-  // for (i = 0; i < quizArray.length; i++) { //Looping throught the array
-
-  //   var quizTable = document.getElementById("quizTable"); //Accesing logbooks
-  //   var row = quizTable.insertRow(quizTable.rows.length);//Inserting a new row
-  //   quizNumberCell = row.insertCell(0); //Inserting the different cells 
-  //   quiznameCell = row.insertCell(1);
-  //   quizDescCell = row.insertCell(2);
-  //   quizRatingCell = row.insertCell(3);
-  //   authorCell = row.insertCell(4);
-
-
-  //   fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-  //   // calculateStats();//Function to calculate statistics
-  // }
 }
 
+function changeOrder() {
+
+  if (defaultSort === "alphabetical") {
+    InsertionAlphabet();
+    console.log(defaultSort);
+    defaultSort = "rate";
+    console.log(defaultSort);
+    document.getElementById("changeOrderButton").innerHTML = "SORT RATING";
+  }
+  else if (defaultSort === "rate") {
+    InsertionRate();
+    defaultSort = "alphabetical";
+    document.getElementById("changeOrderButton").innerHTML = "SORT ALPHABETICAL";
+  }
+}
 
 function Login() {
 
   let UserCheck = document.getElementById("loginUsername").value;
-  let noSpaces = rep(UserCheck);
+  let noSpaces = replaceSpace(UserCheck);
   let passwordCheck = document.getElementById("loginPassword").value;
   for (i = 0; i < usernamePasswordArray.length; i++) {
-    // let temporaryArray = [];
-    // temporaryArray = usernamePasswordArray[i];
 
     if (noSpaces === usernamePasswordArray[i][0]) {
 
       console.log("FoundUsername");
 
       if (passwordCheck === usernamePasswordArray[i][1]) {
-
         console.log("passwordFound")
         username = noSpaces;
-
         goToPage(quizPage);
         return;
       }
-
     }
-
   }
-
   alert("no matches found")
 }
 
 function NewMember() {
 
   let UserCheck = document.getElementById("newUsername").value;
-  let noSpaces = rep(UserCheck);
+  let noSpaces = replaceSpace(UserCheck);
   let passwordCheck = document.getElementById("newPassword").value;
 
   for (i = 0; i < usernamePasswordArray.length; i++) {
-
-    // let temporaryArray = [];
-    // temporaryArray = usernamePasswordArray[i];
 
     if (noSpaces === usernamePasswordArray[i][0]) {
 
@@ -160,18 +122,7 @@ function NewMember() {
 
     username = noSpaces;
 
-
-    // else if (UserCheck.toString().includes(" ")) {
-
-    //   alert("Please remove spaces from username");
-
-
-    //   return;
-    // }
-
   }
-
-  console.log("can use this");
 
   usernamePasswordArray.push([noSpaces, passwordCheck]);
   UsernamePasswordRef.update(usernamePasswordArray);
@@ -180,35 +131,32 @@ function NewMember() {
 
 }
 
+function replaceSpace(userString) {
 
+  let tempString = "";
+  for (i = 0; i < userString.length; i++) {
 
-function rep(str) {
-  for (i = 0; i < str.length; i++) {
+    if (userString[i] === " ") {
+      tempString = tempString + "_";
 
-    if (str.charAt(i) === " ") {
-      str = setCharAt(str, i, '_');
+    } else {
+
+      tempString = tempString + userString[i];
+
     }
   }
-  return str;
-}
 
-function setCharAt(str, index, chr) {
-  if (index > str.length - 1) return str;
-  return str.substr(0, index) + chr + str.substr(index + 1);
-}
+  return tempString;
 
+}
 
 function quizCreation() {
-  console.log("test");
-  quizName = document.getElementById("quizName").value;
-  console.log(quizName);
-  quizDescription = document.getElementById("quizDescription").value;
-  console.log(quizDescription);
 
+  quizName = document.getElementById("quizName").value;
+  quizDescription = document.getElementById("quizDescription").value;
 
   questionNumber = 1;
   document.getElementById("questionNumber").innerHTML = questionNumber;
-
 
 }
 
@@ -216,7 +164,6 @@ function questionCreation() {
   questionNumber++;
 
   document.getElementById("questionNumber").innerHTML = questionNumber;
-
 
   let question = document.getElementById("quizQuestion").value;
   let answer1 = document.getElementById("answer1").value;
@@ -242,7 +189,6 @@ function questionCreation() {
   document.getElementById("Answer4Correct").checked = false;
 
 }
-
 
 function finishQuizCreation() {
 
@@ -269,34 +215,13 @@ function finishQuizCreation() {
   document.getElementById("Answer3Correct").checked = false;
   document.getElementById("Answer4Correct").checked = false;
 
-  console.log(quizArray);
-  // quizArray.push("test");
   quizArray.push([quizName, quizDescription, 0, username, questionArray, 0]);
 
   questionArray = [];
 
   quizRef.update(quizArray);
 
-
-  // document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
-  // var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
-
   InsertionRate();
-
-  // for (i = 0; i < quizArray.length; i++) { //Looping throught the array
-
-  //   var quizTable = document.getElementById("quizTable"); //Accesing logbooks
-  //   var row = quizTable.insertRow(quizTable.rows.length);//Inserting a new row
-  //   quizNumberCell = row.insertCell(0); //Inserting the different cells 
-  //   quiznameCell = row.insertCell(1);
-  //   quizDescCell = row.insertCell(2);
-  //   quizRatingCell = row.insertCell(3);
-  //   authorCell = row.insertCell(4);
-
-
-  //   fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-
-  // }
 
   goToPage(quizPage);
 
@@ -304,37 +229,16 @@ function finishQuizCreation() {
 
 }
 
-
-
 function fillCells(currentRow) {
-
 
   quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='playQuiz(" + currentRow + ")'></i>"
   //Accesing the cell and filling in the cell with values from the array and the objects
-
-
-
-  console.log(quizArray[currentRow][0]);
   quiznameCell.innerHTML = quizArray[currentRow][0];
   quizDescCell.innerHTML = quizArray[currentRow][1];
   quizRatingCell.innerHTML = quizArray[currentRow][2];
   authorCell.innerHTML = quizArray[currentRow][3];
 
-
 }
-
-
-
-
-
-
-//UsernamePasswordRef.update(usernamePasswordArray);
-
-/** This function is used to hide all the different pages and then shows a single page based on the parameter
- Parameters: 
-   pagenumber(string) - Allows the choice of choosing what page to show
- Return: 
-   Returns null */
 
 goToPage(mainPage);//Calls code to change page at beginning of program
 
@@ -343,7 +247,6 @@ function goToPage(pageNumber) {
   document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages with a class of pages
   pageNumber.hidden = false;//shows page needed
 
-
   document.getElementById("newUsername").value = "";
   document.getElementById("newPassword").value = "";
   document.getElementById("loginUsername").value = "";
@@ -351,12 +254,7 @@ function goToPage(pageNumber) {
   document.getElementById("quizName").value = "";
   document.getElementById("quizDescription").value = "";
 
-
-
-
 }
-
-
 
 function playQuiz(quizId) {
   score = 0;
@@ -372,7 +270,6 @@ function playQuiz(quizId) {
   document.getElementById("q3").innerHTML = quizArray[quizId][4][currentQuestion][3][0];
   document.getElementById("q4").innerHTML = quizArray[quizId][4][currentQuestion][4][0];
 
-
 }
 
 function nextQuestion(answerChoice) {
@@ -387,7 +284,6 @@ function nextQuestion(answerChoice) {
     alert("Wrong");
 
   }
-
 
   currentQuestion++;
 
@@ -411,13 +307,11 @@ function nextQuestion(answerChoice) {
   document.getElementById("q3").innerHTML = quizArray[lastQuizId][4][currentQuestion][3][0];
   document.getElementById("q4").innerHTML = quizArray[lastQuizId][4][currentQuestion][4][0];
 
-
 }
 
 function finishQuiz() {
 
   let rate = document.getElementById("rate").value;
-  console.log(rate);
 
   if (document.getElementById("rate").value === "") {
     alert("Please input a rating");
@@ -432,8 +326,6 @@ function finishQuiz() {
 
   }
 
-
-
   let currentAmountOfRatings = quizArray[lastQuizId][5];
 
   currentAmountOfRatings++;
@@ -446,13 +338,9 @@ function finishQuiz() {
 
   let additionOfRates = currentAverageRate * (currentAmountOfRatings - 1);
 
-
   let newAdditionOfRates = parseFloat(additionOfRates) + parseFloat(rate);
 
   let newAverageRate = (Math.round((newAdditionOfRates / currentAmountOfRatings) * 10)) / 10;
-
-
-
 
   quizArray[lastQuizId][2] = newAverageRate;
   quizRef.update(quizArray);
@@ -463,28 +351,8 @@ function finishQuiz() {
 
   goToPage(quizPage);
 
-
-  // document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
-  // var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
-
   InsertionRate();
-
-  // for (i = 0; i < quizArray.length; i++) { //Looping throught the array
-
-  //   var quizTable = document.getElementById("quizTable"); //Accesing logbooks
-  //   var row = quizTable.insertRow(quizTable.rows.length);//Inserting a new row
-  //   quizNumberCell = row.insertCell(0); //Inserting the different cells 
-  //   quiznameCell = row.insertCell(1);
-  //   quizDescCell = row.insertCell(2);
-  //   quizRatingCell = row.insertCell(3);
-  //   authorCell = row.insertCell(4);
-
-
-  //   fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-  //   // calculateStats();//Function to calculate statistics
-  // }
 }
-
 
 function InsertionRate() {
 
@@ -524,14 +392,13 @@ function InsertionRate() {
     quizRatingCell = row.insertCell(3);
     authorCell = row.insertCell(4);
 
-
     fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-    // calculateStats();//Function to calculate statistics
+
   }
 
 }
 
-function InsertionAlphebet() {
+function InsertionAlphabet() {
 
   let first = 0;
   let last = quizArray.length - 1;
@@ -570,7 +437,157 @@ function InsertionAlphebet() {
 
 
     fillCells(i); //calling function to fill the cells with appropiate data, takes parameter of the array index.
-    // calculateStats();//Function to calculate statistics
+
   }
+
+}
+
+function binarySearch() {
+
+  InsertionAlphabet();
+
+  let searchItem = document.getElementById("search").value;
+
+  if (searchItem === "") {
+    alert("Not found");
+    return;
+
+  }
+
+  let low = 0;
+  let high = quizArray.length - 1;
+  let found = false;
+  let middle;
+  let bottom;
+  let top;
+  let searchedArray = [];
+
+  while (high >= low && found === false) {
+
+    middle = Math.round((low + high) / 2);
+    console.log(high);
+    console.log(low);
+    console.log(middle);
+
+
+    if (startInclude(searchItem, quizArray[middle][0]) === true) {
+      console.log("search = middle");
+      found = true;
+
+    }
+    else if (searchItem < quizArray[middle][0]) {
+      console.log("search < middle");
+      high = middle - 1;
+
+
+    }
+    else {
+      console.log("search > middle");
+
+      low = middle + 1;
+
+    }
+
+  }
+
+  if (found === true) {
+
+    console.log(quizArray[middle][0]);
+
+    if (middle === 0) {
+
+      bottom = middle;
+
+    }
+    else {
+      for (a = 1; a < middle + 1; a++) {
+
+
+        if (startInclude(searchItem, quizArray[middle - a][0]) === true) {
+
+          console.log(quizArray[middle - a][0]);
+
+        }
+        else {
+
+          bottom = middle - a + 1;
+          console.log(middle - a + 1 + " Bottom");
+          break;
+
+        }
+      }
+    }
+
+    if (middle === quizArray.length - 1) {
+
+      top = middle;
+
+    } else {
+      for (u = 1; u < ((quizArray.length) - (middle)); u++) {
+
+
+        if (startInclude(searchItem, quizArray[middle + u][0]) === true) {
+
+          console.log(quizArray[middle + u][0]);
+
+        }
+        else {
+
+          console.log(middle + u - 1 + " top");
+          top = middle + u - 1;
+          break;
+
+        }
+      }
+    }
+
+    document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
+    var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
+
+    for (i = bottom; i < top + 1; i++) {
+      console.log(i + " count");
+      var quizTable = document.getElementById("quizTable"); //Accesing logbooks
+      var row = quizTable.insertRow(quizTable.rows.length);//Inserting a new row
+      quizNumberCell = row.insertCell(0); //Inserting the different cells 
+      quiznameCell = row.insertCell(1);
+      quizDescCell = row.insertCell(2);
+      quizRatingCell = row.insertCell(3);
+      authorCell = row.insertCell(4);
+
+      quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='playQuiz(" + i + ")'></i>"
+      //Accesing the cell and filling in the cell with values from the array and the objects
+
+      quiznameCell.innerHTML = quizArray[i][0];
+      quizDescCell.innerHTML = quizArray[i][1];
+      quizRatingCell.innerHTML = quizArray[i][2];
+      authorCell.innerHTML = quizArray[i][3];
+
+    }
+  }
+  else {
+    alert("Not found");
+  }
+
+}
+
+function startInclude(searchText, includesText) {
+
+  let searchTextArray = searchText.split("");
+  let includesTextArray = includesText.split("");
+
+
+  for (i = 0; i < searchTextArray.length; i++) {
+
+    if (searchTextArray[i] !== includesTextArray[i]) {
+
+      return false;
+
+    }
+
+  }
+
+  return true;
+
+
 
 }
