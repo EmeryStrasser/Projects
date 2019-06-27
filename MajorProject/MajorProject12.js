@@ -1,4 +1,12 @@
 
+/*
+Current Bugs
+- When searching, search not case sensitive
+- When creating quizzes, do somethign when only 3 2 or 1 answers
+- 
+*/
+let playingMusic = true;
+
 let usernamePasswordArray = [];
 let quizArray = [];
 
@@ -34,41 +42,62 @@ let score;
 
 let isSearchingBool = false;
 
-UsernamePasswordRef.once('value').then(reload);
+UsernamePasswordRef.once('value').then(reloadUsername);
 quizRef.once('value').then(reloadQuiz);
 
-function reload(data) {
+function reloadUsername(data) {
+
+  let count = 0;
   if (usernamePasswordArray == null) usernamePasswordArray = []; //If there is no data in the online databse, it creates an array
 
   usernamePasswordArray = data.val();//Adding the incoming data into a object
   console.log(usernamePasswordArray);
 
+  for (i = 0; i < usernamePasswordArray.length; i++) {
+
+    if (typeof usernamePasswordArray[i] == 'undefined') {
+
+      count++;
+      console.log(count);
+      usernamePasswordArray.splice(i, 1);
+
+    }
+
+  }
+
+  // for (i = 0; i < count; i++) {
+
+  //   usernamePasswordArray[usernamePasswordArray.length - 1 - i] = null;
+  //   console.log(usernamePasswordArray.length - 1 - i);
+  // }
+
+  console.log(usernamePasswordArray);
+  UsernamePasswordRef.set(usernamePasswordArray);
 }
 
 function reloadQuiz(data) {
   //If there is no data in the online databse, it creates an array
   if (quizArray == null) quizArray = [];
   quizArray = data.val();//Adding the incoming data into a object
-  console.log("test");
 
   for (i = 0; i < quizArray.length; i++) {
 
     if (typeof quizArray[i] == 'undefined') {
-      console.log(i + " tetstst");
       quizArray.splice(i, 1);
+      i--;
 
     }
 
   }
 
-  quizRef.update(quizArray);
+  quizRef.set(quizArray);
 
   InsertionRate();
 
 }
 
 function changeOrder() {
-
+  console.log(defaultSort + " defualt");
   if (defaultSort === "alphabetical") {
     InsertionAlphabet();
     console.log(defaultSort);
@@ -242,6 +271,19 @@ function fillCells(currentRow) {
 
 goToPage(mainPage);//Calls code to change page at beginning of program
 
+function mute() {
+
+  if (playingMusic === true) {
+    audioSection.pause();
+    playingMusic = false;
+  } else {
+
+    audioSection.play();
+    playingMusic = true;
+  }
+}
+
+
 function goToPage(pageNumber) {
 
   document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages with a class of pages
@@ -289,7 +331,7 @@ function nextQuestion(answerChoice) {
 
   if (currentQuestion === quizArray[lastQuizId][4].length) {
 
-    alert("Quiz Finished: Your score is " + score + "/" + currentQuestion);
+
 
     goToPage(results);
     document.getElementById("result").innerHTML = score;
@@ -446,9 +488,16 @@ function binarySearch() {
 
   InsertionAlphabet();
 
+
   let searchItem = document.getElementById("search").value;
 
   if (searchItem === "") {
+    if (defaultSort === "alphabetical") {
+      InsertionRate();
+    }
+    else if (defaultSort === "rate") {
+      InsertionAlphabet();
+    }
     alert("Not found");
     return;
 
@@ -565,6 +614,12 @@ function binarySearch() {
     }
   }
   else {
+    if (defaultSort === "alphabetical") {
+      InsertionRate();
+    }
+    else if (defaultSort === "rate") {
+      InsertionAlphabet();
+    }
     alert("Not found");
   }
 
@@ -587,7 +642,4 @@ function startInclude(searchText, includesText) {
   }
 
   return true;
-
-
-
 }
