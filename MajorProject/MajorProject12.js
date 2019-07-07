@@ -1,7 +1,6 @@
 
 /*
 Current Bugs
-- When searching, search not case sensitive
 - When creating quizzes, do somethign when only 3 2 or 1 answers
 - 
 */
@@ -44,6 +43,7 @@ let isSearchingBool = false;
 
 UsernamePasswordRef.once('value').then(reloadUsername);
 quizRef.once('value').then(reloadQuiz);
+audioSection.play();
 
 function reloadUsername(data) {
 
@@ -190,9 +190,7 @@ function quizCreation() {
 }
 
 function questionCreation() {
-  questionNumber++;
 
-  document.getElementById("questionNumber").innerHTML = questionNumber;
 
   let question = document.getElementById("quizQuestion").value;
   let answer1 = document.getElementById("answer1").value;
@@ -204,6 +202,21 @@ function questionCreation() {
   let checkbox2 = document.getElementById("Answer2Correct").checked;
   let checkbox3 = document.getElementById("Answer3Correct").checked;
   let checkbox4 = document.getElementById("Answer4Correct").checked;
+
+  if (answer1 === "" || answer2 === "" || answer3 === "" || answer4 === "") {
+
+    alert("Please input all answers")
+    return
+  }
+  if (checkbox1 === false && checkbox2 === false && checkbox3 === false && checkbox4 === false) {
+
+    alert("Please have at least one correct answer")
+    return
+  }
+  questionNumber++;
+
+  document.getElementById("questionNumber").innerHTML = questionNumber;
+
 
   questionArray.push([question, [answer1, checkbox1], [answer2, checkbox2], [answer3, checkbox3], [answer4, checkbox4]]);
 
@@ -231,6 +244,17 @@ function finishQuizCreation() {
   let checkbox2 = document.getElementById("Answer2Correct").checked;
   let checkbox3 = document.getElementById("Answer3Correct").checked;
   let checkbox4 = document.getElementById("Answer4Correct").checked;
+
+  if (answer1 === "" || answer2 === "" || answer3 === "" || answer4 === "") {
+
+    alert("Please input all answers")
+    return
+  }
+  if (checkbox1 === false && checkbox2 === false && checkbox3 === false && checkbox4 === false) {
+
+    alert("Please have at least one correct answer")
+    return
+  }
 
   questionArray.push([question, [answer1, checkbox1], [answer2, checkbox2], [answer3, checkbox3], [answer4, checkbox4]]);
 
@@ -519,12 +543,12 @@ function binarySearch() {
     console.log(middle);
 
 
-    if (startInclude(searchItem, quizArray[middle][0]) === true) {
+    if (startInclude(searchItem.toLowerCase(), quizArray[middle][0].toLowerCase()) === true) {
       console.log("search = middle");
       found = true;
 
     }
-    else if (searchItem < quizArray[middle][0]) {
+    else if (searchItem.toLowerCase() < quizArray[middle][0].toLowerCase()) {
       console.log("search < middle");
       high = middle - 1;
 
@@ -626,6 +650,7 @@ function binarySearch() {
 }
 
 function startInclude(searchText, includesText) {
+
 
   let searchTextArray = searchText.split("");
   let includesTextArray = includesText.split("");
