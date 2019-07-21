@@ -1,19 +1,16 @@
 
-/*
-Current Bugs
-- When creating quizzes, do somethign when only 3 2 or 1 answers
-- 
-*/
 let playingMusic = true;
 
+//Creation of the 2 main arrays used in the application
 let usernamePasswordArray = [];
 let quizArray = [];
 
+//The variables needed to connect the application to the firebase database and to use the functionality of firebase
 let database = firebase.database();
-
 let UsernamePasswordRef = database.ref('/UsernamePassword');
 let quizRef = database.ref('/quizDB');
 
+//The default sorting mechansism of the quiz
 let defaultSort = "alphabetical";
 
 let quizName;
@@ -45,44 +42,46 @@ UsernamePasswordRef.once('value').then(reloadUsername);
 quizRef.once('value').then(reloadQuiz);
 audioSection.play();
 
+
+//This function is used, so that the application doesnt instantanously try and access the usernameDatabase before it grabbed the data from firebase database
 function reloadUsername(data) {
 
-  let count = 0;
-  if (usernamePasswordArray == null) usernamePasswordArray = []; //If there is no data in the online databse, it creates an array
+  if (usernamePasswordArray == null) usernamePasswordArray = []; //If there is no data in the online database, it creates an empty array
 
   usernamePasswordArray = data.val();//Adding the incoming data into a object
-  console.log(usernamePasswordArray);
 
+  //Once the database has been accessed, each item in the database is checked to see if it is empty
   for (i = 0; i < usernamePasswordArray.length; i++) {
 
+    //Checking the item to see if it has a value
     if (typeof usernamePasswordArray[i] == 'undefined') {
 
-      count++;
-      console.log(count);
+      //If the item doesnt have a value, that item is spliced out of the array so that there are no empty values int he databse because that could cause issues
       usernamePasswordArray.splice(i, 1);
 
     }
 
   }
 
-  // for (i = 0; i < count; i++) {
-
-  //   usernamePasswordArray[usernamePasswordArray.length - 1 - i] = null;
-  //   console.log(usernamePasswordArray.length - 1 - i);
-  // }
-
-  console.log(usernamePasswordArray);
-  UsernamePasswordRef.set(usernamePasswordArray);
+  UsernamePasswordRef.set(usernamePasswordArray); //Once the appropiate empty fields are spliced from the array, the external firebase database is updated with the new array
 }
 
+
+//This function is used, so that the application doesnt instantanously try and access the quiz database before it grabbed the data from firebase database
 function reloadQuiz(data) {
-  //If there is no data in the online databse, it creates an array
+
+  //If there is no data in the online databse, it creates an empty array
   if (quizArray == null) quizArray = [];
+
   quizArray = data.val();//Adding the incoming data into a object
 
+  //Once the database has been accessed, each item in the database is checked to see if it is empty
   for (i = 0; i < quizArray.length; i++) {
 
+    //Checking the item to see if it has a value
     if (typeof quizArray[i] == 'undefined') {
+
+      //If the item doesnt have a value, that item is spliced out of the array so that there are no empty values int he databse because that could cause issues
       quizArray.splice(i, 1);
       i--;
 
@@ -90,136 +89,152 @@ function reloadQuiz(data) {
 
   }
 
-  quizRef.set(quizArray);
+  quizRef.set(quizArray);//Once the appropiate empty fields are spliced from the array, the external firebase database is updated with the new array
 
-  InsertionRate();
+  InsertionRate();  //Once all the empty quizzes are spliced, the array is then sorted via an insertion sort
 
 }
 
+
+//This function is used so that when you click the button to change the order of sorting, it will change the button to the oppisite method of sorting that is currently displayed so that it switched between the 2
 function changeOrder() {
-  console.log(defaultSort + " defualt");
+
+  //Checks what the next sort is supposed to be
   if (defaultSort === "alphabetical") {
-    InsertionAlphabet();
-    console.log(defaultSort);
-    defaultSort = "rate";
-    console.log(defaultSort);
-    document.getElementById("changeOrderButton").innerHTML = "SORT RATING";
+
+    InsertionAlphabet(); //Sorts the array via alphebetical order
+
+    defaultSort = "rate"; //Changes the next sort to sort by rating
+
+    document.getElementById("changeOrderButton").innerHTML = "SORT RATING"; //Changed the label on the button to reflect the following sorting mechanism
   }
   else if (defaultSort === "rate") {
-    InsertionRate();
-    defaultSort = "alphabetical";
-    document.getElementById("changeOrderButton").innerHTML = "SORT ALPHABETICAL";
+    InsertionRate(); //Sorts the array via rating
+    defaultSort = "alphabetical";//Changes the next sort to sort by alphebetical order
+    document.getElementById("changeOrderButton").innerHTML = "SORT ALPHABETICAL"; //Changed the label on the button to reflect the following sorting mechanism
+
   }
 }
 
+
+//This function is used to login to the application. It will loop through the username array and check for the value which the user has put in for there username and password. If it is found it will grant them access to the application
 function Login() {
 
-  let UserCheck = document.getElementById("loginUsername").value;
-  let noSpaces = replaceSpace(UserCheck);
-  let passwordCheck = document.getElementById("loginPassword").value;
-  for (i = 0; i < usernamePasswordArray.length; i++) {
+  let UserCheck = document.getElementById("loginUsername").value; //Creating a variable which has the evalue of the username which the user has put in
+  let noSpaces = replaceSpace(UserCheck); //Creates a new variable which is the same as the userCheck variable but all the spaces have been replaced by underscores
+  let passwordCheck = document.getElementById("loginPassword").value; //Creates a new variable to store the password which the user has placed in
 
-    if (noSpaces === usernamePasswordArray[i][0]) {
+  for (i = 0; i < usernamePasswordArray.length; i++) {//Looping through the array
 
-      console.log("FoundUsername");
+    if (noSpaces === usernamePasswordArray[i][0]) {//Looping through all the usernames and checking if there are any matches
 
+      //If the username has matched, it will then check if the passwords match
       if (passwordCheck === usernamePasswordArray[i][1]) {
-        console.log("passwordFound")
-        username = noSpaces;
-        goToPage(quizPage);
+
+        username = noSpaces; //If it does match then it will store the current username in a variable for later user
+        goToPage(quizPage);//It will then access the main quiz page
         return;
       }
     }
   }
-  alert("no matches found")
+  alert("no matches found") //If there are no matches for the username and/or password, it will alert the user
 }
 
+
+//A function used to create a new member for the application adn check to see if it is already in use
 function NewMember() {
 
-  let UserCheck = document.getElementById("newUsername").value;
-  let noSpaces = replaceSpace(UserCheck);
-  let passwordCheck = document.getElementById("newPassword").value;
+  let UserCheck = document.getElementById("newUsername").value; //Creating a variable which has the evalue of the username which the user has put in
+  let noSpaces = replaceSpace(UserCheck);//Creates a new variable which is the same as the userCheck variable but all the spaces have been replaced by underscores
+  let passwordCheck = document.getElementById("newPassword").value; //Creates a new variable to store the password which the user has placed in
 
-  for (i = 0; i < usernamePasswordArray.length; i++) {
+  for (i = 0; i < usernamePasswordArray.length; i++) {//Looping through the array
 
-    if (noSpaces === usernamePasswordArray[i][0]) {
+    if (noSpaces === usernamePasswordArray[i][0]) {//Looping through all the usernames and checking if there are any matches
 
-      alert("Username is already being used");
+      alert("Username is already being used");//If there are username matches, then it will alret the user that the usename is already being used
 
       return;
     }
 
-    username = noSpaces;
+    username = noSpaces; //It will then store the current user for later use in the application
 
   }
 
-  usernamePasswordArray.push([noSpaces, passwordCheck]);
-  UsernamePasswordRef.update(usernamePasswordArray);
+  usernamePasswordArray.push([noSpaces, passwordCheck]); //Once it has checked that there are no matching usernames, it will push the new usenrame and password to the username array
+  UsernamePasswordRef.update(usernamePasswordArray); //It will then update the external firebase databse with the new values
 
-  goToPage(quizPage);
+  goToPage(quizPage); //It will then grant the user access to the application, this function takes in the nae of the page which will be accesed
 
 }
 
+//This function is uses to replace all spaces within a username to underscores, it takes in a string and returns thr same string without spaces
+//THIS IS THE STRING MANIPULATION
 function replaceSpace(userString) {
 
-  let tempString = "";
-  for (i = 0; i < userString.length; i++) {
+  let tempString = ""; //It creates a temporary empty string which will later hold the actual string
+  for (i = 0; i < userString.length; i++) { //Looping through each character of the username string
 
-    if (userString[i] === " ") {
-      tempString = tempString + "_";
+    if (userString[i] === " ") { //If the chracter is a space it will replace the temporary string with itself followed by an underscore
+      tempString = tempString + "_"; //Replacing it with an underscore
 
     } else {
 
-      tempString = tempString + userString[i];
+      tempString = tempString + userString[i]; //If the character is not a space, it will add the current letter to the temporray string
 
     }
   }
 
-  return tempString;
+  return tempString; //Returning the new string which has been manipulated
 
 }
 
+//This function is used to create a new quiz, it is called via a button
 function quizCreation() {
 
-  quizName = document.getElementById("quizName").value;
-  quizDescription = document.getElementById("quizDescription").value;
+  quizName = document.getElementById("quizName").value; //Storing the name of the quiz in a variable
+  quizDescription = document.getElementById("quizDescription").value; //Storing the description in a variablr
 
-  questionNumber = 1;
-  document.getElementById("questionNumber").innerHTML = questionNumber;
+  questionNumber = 1; //The default starting quiz question number
+  document.getElementById("questionNumber").innerHTML = questionNumber; //Replacing a heading with the current quiz number
 
 }
 
+//Once the quiz itself has been created, the user then adds questions to the quiz, it is called whenever the user creates a new question
 function questionCreation() {
 
-
+  //Storing all the appropiate data for the question inside variables
   let question = document.getElementById("quizQuestion").value;
   let answer1 = document.getElementById("answer1").value;
   let answer2 = document.getElementById("answer2").value;
   let answer3 = document.getElementById("answer3").value;
   let answer4 = document.getElementById("answer4").value;
 
+  //Storing which answer is the correct answer
   let checkbox1 = document.getElementById("Answer1Correct").checked;
   let checkbox2 = document.getElementById("Answer2Correct").checked;
   let checkbox3 = document.getElementById("Answer3Correct").checked;
   let checkbox4 = document.getElementById("Answer4Correct").checked;
 
-  if (answer1 === "" || answer2 === "" || answer3 === "" || answer4 === "") {
+  if (answer1 === "" || answer2 === "" || answer3 === "" || answer4 === "") { //Checking to see whether all answers have are not empty
 
-    alert("Please input all answers")
+    alert("Please input all answers") //If they are empty the user gets an alert and cannot proceed
     return
   }
-  if (checkbox1 === false && checkbox2 === false && checkbox3 === false && checkbox4 === false) {
+  if (checkbox1 === false && checkbox2 === false && checkbox3 === false && checkbox4 === false) { //Checking whether at least 1 answer is correct
 
-    alert("Please have at least one correct answer")
+    alert("Please have at least one correct answer") //If none are correct then the user gets an alert and cant proceed
     return
   }
-  questionNumber++;
+  questionNumber++; //Updating the current question number
 
-  document.getElementById("questionNumber").innerHTML = questionNumber;
+  document.getElementById("questionNumber").innerHTML = questionNumber; //Updating the heading to reflect the current question number
 
 
-  questionArray.push([question, [answer1, checkbox1], [answer2, checkbox2], [answer3, checkbox3], [answer4, checkbox4]]);
+  questionArray.push([question, [answer1, checkbox1], [answer2, checkbox2], [answer3, checkbox3], [answer4, checkbox4]]); //Adding a new record to the question array, which is composed of the question, the 4 answers, and which ones are correct.
 
+
+  //Resetting the page back to blank for the next questions creaton
   document.getElementById("quizQuestion").value = "";
   document.getElementById("answer1").value = "";
   document.getElementById("answer2").value = "";
@@ -232,6 +247,7 @@ function questionCreation() {
 
 }
 
+//Once all the questions have been created, this function 
 function finishQuizCreation() {
 
   let question = document.getElementById("quizQuestion").value;
