@@ -576,35 +576,31 @@ function binarySearch() {
 
   }
 
-  let low = 0;
-  let high = quizArray.length - 1;
+  //the main mechanics of the bianry search
+
+  let low = 0;//Letting the lowest variable to 0
+  let high = quizArray.length - 1; //Setting the highest variable
   let found = false;
   let middle;
-  let bottom;
+  let bottom; //Creating the top, bottom variable in order to show all of the items that match the search
   let top;
-  let searchedArray = [];
+  let searchedArray = []; //Creating the tem array to store the searching array
 
-  while (high >= low && found === false) {
+  while (high >= low && found === false) { //Looping until its been found
 
-    middle = Math.round((low + high) / 2);
-    console.log(high);
-    console.log(low);
-    console.log(middle);
+    middle = Math.round((low + high) / 2); //Setting the middle variabel to the middle of the sorted array
 
-
-    if (startInclude(searchItem.toLowerCase(), quizArray[middle][0].toLowerCase()) === true) {
-      console.log("search = middle");
-      found = true;
+    if (startInclude(searchItem.toLowerCase(), quizArray[middle][0].toLowerCase()) === true) { //Checking to see if any of the quizzes start with the search text. startInclude function takes in the seach text converted to lowercase and also the current comparison quiz name in lowercase
+      found = true; //Setting found to ture
 
     }
-    else if (searchItem.toLowerCase() < quizArray[middle][0].toLowerCase()) {
+    else if (searchItem.toLowerCase() < quizArray[middle][0].toLowerCase()) { //Checking to see if its lower alphebetically
       console.log("search < middle");
-      high = middle - 1;
+      high = middle - 1; //if so it minues 1 from the high variable
 
 
     }
-    else {
-      console.log("search > middle");
+    else {//If its not equal and not higher then lower is increased by 1
 
       low = middle + 1;
 
@@ -612,50 +608,43 @@ function binarySearch() {
 
   }
 
-  if (found === true) {
+  if (found === true) { //Once found, then it will check either side of that item to find all items that start with the search text
 
-    console.log(quizArray[middle][0]);
-
-    if (middle === 0) {
+    if (middle === 0) {  //If the found item is at the bottom then there is no need to check on th elower side of the item
 
       bottom = middle;
 
     }
     else {
-      for (a = 1; a < middle + 1; a++) {
+      for (a = 1; a < middle + 1; a++) { //If its not at the bottom, it will loop through every item below the item and check to see of it matches the search criterua
 
 
-        if (startInclude(searchItem, quizArray[middle - a][0]) === true) {
-
-          console.log(quizArray[middle - a][0]);
+        if (startInclude(searchItem, quizArray[middle - a][0]) === true) { //If it does include the text then it continues checking
 
         }
-        else {
+        else {//If ot then it sets the lowest variable as the previous check
 
           bottom = middle - a + 1;
-          console.log(middle - a + 1 + " Bottom");
           break;
 
         }
       }
     }
 
-    if (middle === quizArray.length - 1) {
+    if (middle === quizArray.length - 1) {//If the found item is at the top then no need to search above
 
       top = middle;
 
     } else {
-      for (u = 1; u < ((quizArray.length) - (middle)); u++) {
+      for (u = 1; u < ((quizArray.length) - (middle)); u++) { //Looping through to find the highest variable
 
 
-        if (startInclude(searchItem, quizArray[middle + u][0]) === true) {
-
-          console.log(quizArray[middle + u][0]);
+        if (startInclude(searchItem, quizArray[middle + u][0]) === true) { //Checking to see if it includes the text
 
         }
         else {
 
-          console.log(middle + u - 1 + " top");
+          //If not then it sets the highest variable to the previously found top
           top = middle + u - 1;
           break;
 
@@ -676,9 +665,8 @@ function binarySearch() {
       quizRatingCell = row.insertCell(3);
       authorCell = row.insertCell(4);
 
-      quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='playQuiz(" + i + ")'></i>"
       //Accesing the cell and filling in the cell with values from the array and the objects
-
+      quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='playQuiz(" + i + ")'></i>"
       quiznameCell.innerHTML = quizArray[i][0];
       quizDescCell.innerHTML = quizArray[i][1];
       quizRatingCell.innerHTML = quizArray[i][2];
@@ -686,7 +674,7 @@ function binarySearch() {
 
     }
   }
-  else {
+  else {//If no results are found, it will put the quiz back to the sorted order it was before the quiz was serached
     if (defaultSort === "alphabetical") {
       InsertionRate();
     }
@@ -698,22 +686,23 @@ function binarySearch() {
 
 }
 
-function startInclude(searchText, includesText) {
+function startInclude(searchText, includesText) { //This function takes in 2 variables in order to check if it begins with a piece of text. 
+  //The searchText is the string that the user is searching for. The includes text is the quiz name being currently searched
 
 
-  let searchTextArray = searchText.split("");
-  let includesTextArray = includesText.split("");
+  let searchTextArray = searchText.split(""); //Creating an array that is composed of all the letters in the serach text
+  let includesTextArray = includesText.split("");//Creating an array that is composed of all the letters in the includes text text
 
 
-  for (i = 0; i < searchTextArray.length; i++) {
+  for (i = 0; i < searchTextArray.length; i++) {//Looping through the amount of letters in the searchText
 
-    if (searchTextArray[i] !== includesTextArray[i]) {
+    if (searchTextArray[i] !== includesTextArray[i]) {//Checking every letter of the search text with the letters of the includes text
 
-      return false;
+      return false;//If at any stage it doesnt match then it returns false
 
     }
 
   }
 
-  return true;
+  return true; //If it does match then it returns true
 }
