@@ -250,30 +250,34 @@ function questionCreation() {
 //Once all the questions have been created, this function 
 function finishQuizCreation() {
 
+  //Storing all the appropiate data for the question inside variables
   let question = document.getElementById("quizQuestion").value;
   let answer1 = document.getElementById("answer1").value;
   let answer2 = document.getElementById("answer2").value;
   let answer3 = document.getElementById("answer3").value;
   let answer4 = document.getElementById("answer4").value;
 
+  //Storing which answer is the correct answer
   let checkbox1 = document.getElementById("Answer1Correct").checked;
   let checkbox2 = document.getElementById("Answer2Correct").checked;
   let checkbox3 = document.getElementById("Answer3Correct").checked;
   let checkbox4 = document.getElementById("Answer4Correct").checked;
 
-  if (answer1 === "" || answer2 === "" || answer3 === "" || answer4 === "") {
+  if (answer1 === "" || answer2 === "" || answer3 === "" || answer4 === "") { //Checking to see whether all answers have are not empty
 
-    alert("Please input all answers")
+    alert("Please input all answers") //If they are empty the user gets an alert and cannot proceed
     return
   }
-  if (checkbox1 === false && checkbox2 === false && checkbox3 === false && checkbox4 === false) {
+  if (checkbox1 === false && checkbox2 === false && checkbox3 === false && checkbox4 === false) { //Checking whether at least 1 answer is correct
 
-    alert("Please have at least one correct answer")
+    alert("Please have at least one correct answer") //If none are correct then the user gets an alert and cant proceed
     return
   }
 
+  //Adding a new record to the question array, which is composed of the question, the 4 answers, and which ones are correct.
   questionArray.push([question, [answer1, checkbox1], [answer2, checkbox2], [answer3, checkbox3], [answer4, checkbox4]]);
 
+  //Resetting the page back to blank for the next questions creaton
   document.getElementById("quizQuestion").value = "";
   document.getElementById("answer1").value = "";
   document.getElementById("answer2").value = "";
@@ -284,32 +288,43 @@ function finishQuizCreation() {
   document.getElementById("Answer3Correct").checked = false;
   document.getElementById("Answer4Correct").checked = false;
 
+  //Adding the entire quiz record into the quiz array, the record consists of the quiz name, description, rating, amount of players, the author and also the question array that has been created via creating questions
   quizArray.push([quizName, quizDescription, 0, username, questionArray, 0]);
 
+  //Resetting the question array back to empty for the next quiz creation
   questionArray = [];
 
-  quizRef.update(quizArray);
+  quizRef.update(quizArray); //Updating the external quiz database with the new quiz data
 
-  InsertionRate();
+  InsertionRate(); //Sorting the quiz by rating
 
-  goToPage(quizPage);
-
-  console.log(quizArray);
+  goToPage(quizPage); //Calls the function to display the main quiz page. Takes in the name of the page as the parameter
 
 }
 
+
+//This function takes in the paremeter of a row number in order to fill out all of the cells in the row with the appropiate data. This is used for displaying the quizzes in the quiz table
 function fillCells(currentRow) {
 
+  //In cell 1, a play button is placed with an onClick function that calls the playQuiz function with a parameter of the current row.
   quizNumberCell.innerHTML = "<i class='fas fa-play w3-button w3-xxlarge w3-round-xlarge' onclick='playQuiz(" + currentRow + ")'></i>"
-  //Accesing the cell and filling in the cell with values from the array and the objects
+
+  //In cell 2, it displays the quiz name of the current row
   quiznameCell.innerHTML = quizArray[currentRow][0];
+
+  //In cell 3, it displays the quiz description
   quizDescCell.innerHTML = quizArray[currentRow][1];
+
+  //In cell 4 it displays the rating
   quizRatingCell.innerHTML = quizArray[currentRow][2];
+
+  //In cell 5 it dispays the author
   authorCell.innerHTML = quizArray[currentRow][3];
 
 }
 
-goToPage(mainPage);//Calls code to change page at beginning of program
+goToPage(mainPage);//Calls code to change page at beginning of program. it takes in the parameter of the page that is wanted.
+
 
 function mute() {
 
@@ -324,11 +339,13 @@ function mute() {
 }
 
 
-function goToPage(pageNumber) {
+function goToPage(pageNumber) {  //This function takes in a single parameter which is the name of the id of a div that is going to be displayed
 
   document.querySelectorAll('.pages').forEach((e) => e.hidden = true); //hides all pages with a class of pages
   pageNumber.hidden = false;//shows page needed
 
+
+  //Resetting all input data such that it still isnt there when the user goes to that page again
   document.getElementById("newUsername").value = "";
   document.getElementById("newPassword").value = "";
   document.getElementById("loginUsername").value = "";
@@ -338,14 +355,17 @@ function goToPage(pageNumber) {
 
 }
 
+//THis function takes in a single parameter, which is the id of the quzi that is going to be played. 
 function playQuiz(quizId) {
-  score = 0;
-  goToPage(questions);
-  currentQuestion = 0;
-  questionCounter = 1
-  document.getElementById("quizQuestionNumber").innerHTML = questionCounter;
-  lastQuizId = quizId;
 
+  score = 0; //Resetting the current score back to 0
+  goToPage(questions); //Displaying the question page via this function that takes in a single parameter.
+  currentQuestion = 0; //Restting the current question back to default
+  questionCounter = 1 //Setting the amount of questions to 1 as there has to be at leats 1 question
+  document.getElementById("quizQuestionNumber").innerHTML = questionCounter; //Displaying the current question on the top of the screen
+  lastQuizId = quizId; //Storing the quizId variable to be used later on in the program
+
+  //Setting the question and the 4 answers to the 1st questions data in the database
   document.getElementById("question").innerHTML = quizArray[quizId][4][currentQuestion][0];
   document.getElementById("q1").innerHTML = quizArray[quizId][4][currentQuestion][1][0];
   document.getElementById("q2").innerHTML = quizArray[quizId][4][currentQuestion][2][0];
@@ -354,35 +374,35 @@ function playQuiz(quizId) {
 
 }
 
+//Once the user has completed a question, they press next to go to the nect question. THis function takes in the previous questions answer
 function nextQuestion(answerChoice) {
 
-  if (quizArray[lastQuizId][4][currentQuestion][answerChoice][1] === true) {
+  if (quizArray[lastQuizId][4][currentQuestion][answerChoice][1] === true) { //Checking to see if the answer that was given matches any of the answers for that question in the databse
 
-    score++;
-    alert("Correct");
+    score++; //If it does match, then the score goes up by 1
+    alert("Correct"); //An alert to tell the user they got it correct
 
   }
   else {
-    alert("Wrong");
+    alert("Wrong"); //If it does not match,an alert tells the user they got it wrong
 
   }
 
-  currentQuestion++;
+  currentQuestion++; //THe current question is then moved to the following question
 
-  if (currentQuestion === quizArray[lastQuizId][4].length) {
+  if (currentQuestion === quizArray[lastQuizId][4].length) { //This is checking to see of all the questions have been completed
 
-
-
-    goToPage(results);
-    document.getElementById("result").innerHTML = score;
-    document.getElementById("amountOfQuestions").innerHTML = quizArray[lastQuizId][4].length
+    goToPage(results); //The function is called to go to the results page
+    document.getElementById("result").innerHTML = score; //Displaying the score on the screen
+    document.getElementById("amountOfQuestions").innerHTML = quizArray[lastQuizId][4].length //Showing how many questions were in the quiz
     return;
 
   }
 
-  questionCounter++;
+  questionCounter++; //If the quiz is not yet finished, the questions counter goes up by 1
   document.getElementById("quizQuestionNumber").innerHTML = questionCounter;
 
+  //The questions and the answers are updated to the next question
   document.getElementById("question").innerHTML = quizArray[lastQuizId][4][currentQuestion][0];
   document.getElementById("q1").innerHTML = quizArray[lastQuizId][4][currentQuestion][1][0];
   document.getElementById("q2").innerHTML = quizArray[lastQuizId][4][currentQuestion][2][0];
@@ -391,75 +411,80 @@ function nextQuestion(answerChoice) {
 
 }
 
-function finishQuiz() {
 
-  let rate = document.getElementById("rate").value;
+function finishQuiz() { //THis function is called once the user has finished the quiz and had finsihed rating the quiz
 
-  if (document.getElementById("rate").value === "") {
-    alert("Please input a rating");
+
+  let rate = document.getElementById("rate").value; //The given rating is stored in a variable for an average calculation
+
+  if (document.getElementById("rate").value === "") { //Checking to see if the user gave a rating
+    alert("Please input a rating"); //if they did not, an alert pops up which tells them to do so
     return;
 
   }
 
-  if (rate < 0 || rate > 10) {
+  if (rate < 0 || rate > 10) { //Making sure that the rating is between 0 and 10
 
-    alert("Please input a number between 0 and 10");
+    alert("Please input a number between 0 and 10"); //If it isnt, then an alert pops up
     return;
 
   }
 
-  let currentAmountOfRatings = quizArray[lastQuizId][5];
+  let currentAmountOfRatings = quizArray[lastQuizId][5]; //Stores the current amount of people who have played that quiz in a variable
 
-  currentAmountOfRatings++;
-  console.log(currentAmountOfRatings);
-  quizArray[lastQuizId][5] = currentAmountOfRatings;
+  currentAmountOfRatings++; //Increases the current amount of players by 1 since user had just played it
 
-  quizRef.update(quizArray);
+  quizArray[lastQuizId][5] = currentAmountOfRatings;//Updating the array with the new amount of players
 
-  let currentAverageRate = quizArray[lastQuizId][2];
+  quizRef.update(quizArray); //Updating the external database
 
-  let additionOfRates = currentAverageRate * (currentAmountOfRatings - 1);
+  let currentAverageRate = quizArray[lastQuizId][2]; //Stores the current average rate in a variable
 
-  let newAdditionOfRates = parseFloat(additionOfRates) + parseFloat(rate);
+  let additionOfRates = currentAverageRate * (currentAmountOfRatings - 1); //Storing the addition of all the previos ratings in a variable
 
-  let newAverageRate = (Math.round((newAdditionOfRates / currentAmountOfRatings) * 10)) / 10;
+  let newAdditionOfRates = parseFloat(additionOfRates) + parseFloat(rate); //Adding the users given rating to the total addition of ratings
 
-  quizArray[lastQuizId][2] = newAverageRate;
-  quizRef.update(quizArray);
+  let newAverageRate = (Math.round((newAdditionOfRates / currentAmountOfRatings) * 10)) / 10; //Creates a new average rating by dividing this new addion by the current amount of players
 
-  console.log(lastQuizId);
-  var x = document.getElementById("quizTable").rows[lastQuizId + 2].cells;
-  x[3].innerHTML = newAverageRate;
+  quizArray[lastQuizId][2] = newAverageRate; //Updating the quiz array
+  quizRef.update(quizArray);//Updating the external databse
 
-  goToPage(quizPage);
+  var quizRow = document.getElementById("quizTable").rows[lastQuizId + 2].cells; //Dispalyign the new average rating in the quiz table
+  quizRow[3].innerHTML = newAverageRate;//Dispalyign the new average rating in the quiz table
 
-  InsertionRate();
+  goToPage(quizPage); //Going back to the quiz page
+
+  InsertionRate(); //Resorting the quiz via rating as the ratings have now been changed
 }
 
+
+//This function is used to sort the quiz array via rating
+
+//INSERTION SORTING
 function InsertionRate() {
 
-  let first = 0;
-  let last = quizArray.length - 1;
-  let nextPos = last - 1;
+  let first = 0; //Setting a variable called first to 0
+  let last = quizArray.length - 1; //Setting the last variable to the length of the array
+  let nextPos = last - 1; //Setting the item which the last variable will be compared with
 
-  while (nextPos >= first) {
+  while (nextPos >= first) { //This loop runs until the comparision variable is 0 and the array has been fully sorted
 
-    let nextSwapItem = quizArray[nextPos];
-    let nextItem = quizArray[nextPos][2];
-    let current = nextPos;
+    let nextSwapItem = quizArray[nextPos]; //setting the object that is to be sorted
+    let nextItem = quizArray[nextPos][2]; //Creating a variable which has the value that will actually be used for comparison. I.e the rating
+    let current = nextPos; //Setting the current item to the next position
 
-    while (current < last && nextItem < quizArray[current + 1][2]) {
+    while (current < last && nextItem < quizArray[current + 1][2]) { // This loops until the swap has been accomplished
 
-      current++;
-      quizArray[current - 1] = quizArray[current];
+      current++; //Increasing the current item by 1
+      quizArray[current - 1] = quizArray[current]; //Swapping the 2 items
 
     }
 
-    quizArray[current] = nextSwapItem;
-    nextPos--;
+    quizArray[current] = nextSwapItem; //Swapping the 2 items
+    nextPos--; //Moving the posistion down
   }
 
-  quizRef.update(quizArray);
+  quizRef.update(quizArray); //Updating the external database
 
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
   var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
@@ -479,31 +504,35 @@ function InsertionRate() {
   }
 
 }
+
+//This function is used to sort the quiz array via alphabetical order
+
+//INSERTION SORTING
 
 function InsertionAlphabet() {
 
-  let first = 0;
-  let last = quizArray.length - 1;
-  let nextPos = last - 1;
+  let first = 0;//Setting a variable called first to 0
+  let last = quizArray.length - 1;//Setting the last variable to the length of the array
+  let nextPos = last - 1;//Setting the item which the last variable will be compared with
 
-  while (nextPos >= first) {
+  while (nextPos >= first) {//This loop runs until the comparision variable is 0 and the array has been fully sorted
 
-    let nextSwapItem = quizArray[nextPos];
-    let nextItem = quizArray[nextPos][0];
-    let current = nextPos;
+    let nextSwapItem = quizArray[nextPos];//setting the object that is to be sorted
+    let nextItem = quizArray[nextPos][0];//Creating a variable which has the value that will actually be used for comparison. I.e the name
+    let current = nextPos;//Setting the current item to the next position
 
-    while (current < last && nextItem > quizArray[current + 1][0]) {
+    while (current < last && nextItem > quizArray[current + 1][0]) { // This loops until the swap has been accomplishedv
 
-      current++;
-      quizArray[current - 1] = quizArray[current];
+      current++;//Increasing the current item by 1
+      quizArray[current - 1] = quizArray[current];//Swapping the 2 items
 
     }
 
-    quizArray[current] = nextSwapItem;
-    nextPos--;
+    quizArray[current] = nextSwapItem;//Swapping the 2 items
+    nextPos--; //Moving the posistion down
   }
 
-  quizRef.update(quizArray);
+  quizRef.update(quizArray); //Updating the xternal databse
   document.getElementById('tbody').innerHTML = ''; //Accesing the logBook
   var testRow = document.getElementById('tbody').insertRow(0);//Adding row to the table
 
@@ -524,21 +553,25 @@ function InsertionAlphabet() {
 
 }
 
+
+//This function completes a binary search for a quiz name that the user wants
+
+//BINARY SEARCH
 function binarySearch() {
 
-  InsertionAlphabet();
+  InsertionAlphabet(); //Firstly putting the quiz into alphabetical order
 
 
-  let searchItem = document.getElementById("search").value;
+  let searchItem = document.getElementById("search").value; //Creating a variable for the users input
 
-  if (searchItem === "") {
-    if (defaultSort === "alphabetical") {
-      InsertionRate();
+  if (searchItem === "") { //If the user has not put in a search item, the list is resorted back to what it was before
+    if (defaultSort === "alphabetical") { //
+      InsertionRate();//list is resorted back to what it was before
     }
     else if (defaultSort === "rate") {
-      InsertionAlphabet();
+      InsertionAlphabet();//list is resorted back to what it was before
     }
-    alert("Not found");
+    alert("Not found"); //An alert stating that there was no found results
     return;
 
   }
