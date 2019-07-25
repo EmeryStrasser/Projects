@@ -17,14 +17,10 @@
     </button>
     <audio class="pages" id="audioSection" autoplay controls loop>
         <!--I do not take any credit for this audio and how I did it, i wanted to add audio into my assignment for FUN, the website which i got this Audio section from is http://jsfiddle.net/WsXX3/33/    I am not trying to steal any of this, i was just curious for how it works  -->
-
         <source src="https://ia800902.us.archive.org/11/items/12Waves/10%20Synthpop%20Motion.wav">
         <!--The background music -->
     </audio>
 
-    <!-- The background of the project -->
-
-    <!-- <div class="wrapper"></div> -->
 
     <!-- The opening page of the project -->
     <div class="pages w3-center" id="mainPage">
@@ -69,19 +65,22 @@
         <div style="margin-right:42%; margin-left:42%;">
             <input class="w3-center w3-round-large w3-animate-input input" id="loginUsername" type="text" style="width:78%; height:8%; font-size:18;"
                 placeholder="Username">
+            <!-- username input -->
             <br>
             <br>
             <input class="w3-center w3-round-large w3-animate-input input" id="loginPassword" type="password" style="width:78%; height:8%; font-size:18;"
                 placeholder="Password">
+            <!-- password input -->
         </div>
 
         <br>
         <br>
         <button class="w3-btn w3-Large w3-round-xLarge submit w3-text-white" onclick="goToPage(signupPage)" style="width:30%;">Not a member, click here</button>
+        <!-- member button-->
         <br>
         <br>
         <button class="w3-btn w3-xxLarge w3-round-xLarge submit w3-text-white" onclick="Login()" style="width:30%;">Login</button>
-
+        <!-- Login button button-->
         <br>
         <br>
         <!-- Button to go back to main page -->
@@ -107,18 +106,21 @@
         <div style="margin-right:42%; margin-left:42%;">
             <input class="w3-center w3-round-large w3-animate-input input" id="newUsername" type="text" style="width:78%; height:8%; font-size:18;"
                 placeholder="Username">
+            <!--usenrame inpit-->
             <br>
             <br>
             <input class="w3-center w3-round-large w3-animate-input input" id="newPassword" type="password" style="width:78%; height:8%; font-size:18;"
                 placeholder="Password">
+            <!--password inpit-->
         </div>
         <br>
         <br>
         <button class="w3-btn w3-Large w3-round-xLarge submit w3-text-white" onclick="goToPage(loginPage)" style="width:30%;">Already a member, click here</button>
+        <!--Login button-->
         <br>
         <br>
         <button class="w3-btn w3-xxLarge w3-round-xLarge submit w3-text-white" onclick="NewMember()" style="width:30%;">CREATE ACCOUNT</button>
-
+        <!--signup button-->
         <br>
         <br>
         <!-- Button to go back to main page -->
@@ -126,24 +128,30 @@
 
     </div>
 
-
+    <!--THE MAIN QUIZ PAGE-->
     <div class="pages w3-center" id="quizPage">
         <br>
         <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="goToPage(mainPage)" style="width:30%;">LOGOUT</button>
+        <!--Button to log out an go back to main page-->
         <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="goToPage(createQuizPage)" style="width:30%;">CREATE QUIZ</button>
+        <!--Button to create a brand new quiz-->
         <button id="changeOrderButton" class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="changeOrder()" style="width:30%;">SORT ALPHABETICAL</button>
-        <!-- <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="goToPage()" style="width:30%;">MY QUIZZES</button> -->
+        <!--Button to sort the quiz-->
         <br>
         <br>
         <input class="w3-center w3-round-large input" id="search" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Search Quizzes ...">
+        <!--A search bar-->
         <button class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="binarySearch()" style="width:5%;">
+            <!--A button that starts the binary search-->
             <i class="fas fa-search"></i>
         </button>
         <div class="table-box">
+            <!--The quiz table-->
 
             <table cellpadding="30" id="quizTable">
                 <tr>
                     <th>&emsp;&emsp;
+                        <!--The main headings-->
                     </th>
                     <th>Quiz Name</th>
                     <th>Description</th>
@@ -152,6 +160,7 @@
                 </tr>
 
                 <tbody id="tbody">
+                    <!--The temporary body-->
                     <tr>
                         <td>1</td>
                         <td>TestQuiz</td>
@@ -166,7 +175,7 @@
         </div>
     </div>
 
-
+    <!--The quiz creation page-->
     <div class="pages w3-center" id="createQuizPage">
 
         <br>
@@ -181,10 +190,12 @@
         <div style="margin-right:35%; margin-left:35%;">
             <input class="w3-center w3-round-large w3-animate-input input" id="quizName" type="text" style="width:80%; height:8%; font-size:18;"
                 placeholder="QUIZ NAME">
+            <!--An input for the quiz name-->
             <br>
             <br>
             <input class="w3-center w3-round-large w3-animate-input input" id="quizDescription" type="text" style="width:80%; height:20%; font-size:18;"
                 placeholder="DESCRIPTION">
+            <!--An input for the quiz description-->
 
             <br>
             <br>
@@ -195,6 +206,7 @@
 
         <button class="w3-btn w3-xxLarge w3-round-xLarge submit w3-text-white" onclick=" quizCreation(); goToPage(questionCreationPage); "
             style="width:30%;">CREATE QUIZ</button>
+        <!--Button to start the actual question creation-->
 
         <br>
         <br>
@@ -203,7 +215,7 @@
 
     </div>
 
-
+    <!--QUESTION CREATION PAGE-->
     <div class="pages w3-center" id="questionCreationPage">
         <br>
 
@@ -219,12 +231,14 @@
         <div style="margin-right:10%; margin-left:10%;">
             <input class="w3-center w3-round-large w3-animate-input input" id="quizQuestion" type="text" style="width:80%; height:8%; font-size:18;"
                 placeholder="The Question">
+            <!--Input for the question-->
             <br>
             <br>
 
 
             <br>
             <br>
+            <!--The 4 inputs for the answers-->
             <input class="w3-center w3-round-large input" id="answer1" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Answer 1">
             <input class="w3-center w3-round-large input" id="answer2" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Answer 2">
             <input class="w3-center w3-round-large input" id="answer3" type="text" style="width:20%; height:8%; font-size:18;" placeholder="Answer 3">
@@ -232,9 +246,8 @@
 
             <br>
             <br>
-            <p class="w3-text-white w3-wide ">Select correct answer/answers
-
-            </p>
+            <p class="w3-text-white w3-wide ">Select correct answer/answers</p>
+            <!--4 checkboxes to choose correct answers-->
             <input type="checkbox" id="Answer1Correct">
             <input type="checkbox" id="Answer2Correct">
             <input type="checkbox" id="Answer3Correct">
@@ -243,16 +256,14 @@
         <br>
         <br>
 
-        <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="" style="width:05%;">
-            <</button>
 
-                <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="finishQuizCreation()" style="width:20%;">FINISH</button>
-                <!-- Button to go back to main page -->
-                <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="questionCreation()" style="width:05%;">></button>
-
+        <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="finishQuizCreation()" style="width:20%;">FINISH</button>
+        <!-- Button to finsihe the quiz creation -->
+        <button class="w3-btn w3-xLarge w3-round-Large w3-cyan w3-text-white" onclick="questionCreation()" style="width:05%;">></button>
+        <!--Button to go to next question-->
     </div>
 
-
+    <!--THE QUIZ QUESTION PAGE-->
     <div class="pages w3-center" id="questions">
         <br>
 
@@ -268,6 +279,7 @@
         <div style="margin-right:10%; margin-left:10%;">
             <p id="smallHeading" class="w3-text-white w3-wide ">
                 <span id="question">What sound does a duck make?</span>
+                <!--The current question-->
             </p>
             <br>
             <br>
@@ -276,6 +288,7 @@
             <br>
             <br>
             <span>
+                <!--The 4 answers to the question which call a function that checks if its correct-->
                 <button id="q1" class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="nextQuestion(1)" style="width:30%;">Quack</button>
                 <button id="q2" class="w3-btn w3-xxLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="nextQuestion(2)" style="width:30%;">Moo</button>
                 <br>
@@ -300,6 +313,7 @@
 
     </div>
 
+    <!--THE RESULTS PAGE-->
     <div class="pages w3-center" id="results">
         <br>
 
@@ -309,6 +323,7 @@
         <br>
 
         <p id="smallHeading" class="w3-text-white w3-wide ">
+            <!--Your current score out of the number of questions-->
             <span id="result">10</span> /
             <span id="amountOfQuestions">10</span>
         </p>
@@ -317,6 +332,7 @@
         <p class="w3-text-white w3-wide " style="font-size: 20px">Please Rate</p>
         <input class="w3-center w3-round-large input" id="rate" type="number" style="width:5%; height:8%; font-size:18;" placeholder="Rating/10"
             value="5">
+        <!--An input for the user to rate the quiz-->
 
         <span class="w3-text-white w3-wide " style="font-size:20px">/10</span>
 
@@ -324,26 +340,15 @@
         <br>
         <br>
         <button class="w3-btn w3-xLarge w3-round-xxLarge w3-cyan w3-text-white" onclick="finishQuiz()" style="width:20%;">Home</button>
-        <br>
-        <br>
-        <br>
-        <br>
-
         <!-- Button to go back to main page -->
-
+        <br>
+        <br>
+        <br>
+        <br>
 
     </div>
 
-
-
-
-
-
-
-
-
-
-
+    <!-- The script connecting to the firebase -->
     <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
     <script>
         // Your web app's Firebase configuration
