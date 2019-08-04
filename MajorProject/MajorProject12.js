@@ -148,6 +148,17 @@ function NewMember() {
   let noSpaces = replaceSpace(UserCheck);//Creates a new variable which is the same as the userCheck variable but all the spaces have been replaced by underscores
   let passwordCheck = document.getElementById("newPassword").value; //Creates a new variable to store the password which the user has placed in
 
+  if (noSpaces === "") {
+
+    alert("Please input all fields");
+    return
+  }
+
+  if (passwordCheck === "") {
+    alert("Please input all fields");
+    return
+  }
+
   for (i = 0; i < usernamePasswordArray.length; i++) {//Looping through the array
 
     if (noSpaces === usernamePasswordArray[i][0]) {//Looping through all the usernames and checking if there are any matches
@@ -215,7 +226,12 @@ function questionCreation() {
   let checkbox2 = document.getElementById("Answer2Correct").checked;
   let checkbox3 = document.getElementById("Answer3Correct").checked;
   let checkbox4 = document.getElementById("Answer4Correct").checked;
+  if (question === "") {
+    alert("Please input a questions") //If they are empty the user gets an alert and cannot proceed
+    return
 
+
+  }
   if (answer1 === "" || answer2 === "" || answer3 === "" || answer4 === "") { //Checking to see whether all answers have are not empty
 
     alert("Please input all answers") //If they are empty the user gets an alert and cannot proceed
@@ -326,7 +342,7 @@ function fillCells(currentRow) {
 goToPage(mainPage);//Calls code to change page at beginning of program. it takes in the parameter of the page that is wanted.
 
 
-function mute() {
+function mute() { //Function to mute the music thats being played
 
   if (playingMusic === true) {
     audioSection.pause();
@@ -584,7 +600,7 @@ function binarySearch() {
   let middle;
   let bottom; //Creating the top, bottom variable in order to show all of the items that match the search
   let top;
-  let searchedArray = []; //Creating the tem array to store the searching array
+  let searchedArray = []; //Creating the temp array to store the searching array
 
   while (high >= low && found === false) { //Looping until its been found
 
