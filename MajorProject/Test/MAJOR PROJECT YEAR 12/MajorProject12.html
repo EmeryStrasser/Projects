@@ -330,8 +330,8 @@
         <br>
 
         <p class="w3-text-white w3-wide " style="font-size: 20px">Please Rate</p>
-        <input class="w3-center w3-round-large input" id="rate" type="number" style="width:5%; height:8%; font-size:18;" placeholder="Rating/10"
-            value="5">
+        <input class="w3-center w3-round-large input" max="10" min="0" step="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+            id="rate" type="number" style="width:5%; height:8%; font-size:18;" placeholder="Rating/10" value="5">
         <!--An input for the user to rate the quiz-->
 
         <span class="w3-text-white w3-wide " style="font-size:20px">/10</span>
